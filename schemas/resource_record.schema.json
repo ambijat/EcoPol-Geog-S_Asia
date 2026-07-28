@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://is529n.local/schemas/resource_record.schema.json",
+  "title": "IS529N resource record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resource_id", "title", "resource_type", "source_class", "author",
+    "publication_date", "original_location", "local_path", "accessed_date",
+    "content_sha256", "course_relevance", "intended_use",
+    "verification_status", "fidelity_status", "copyright_status",
+    "approval_status", "notes", "created_at", "updated_at"
+  ],
+  "properties": {
+    "resource_id": {"type": "string", "pattern": "^IS529N-RES-[0-9]{4,}$"},
+    "title": {"type": "string", "minLength": 1},
+    "resource_type": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "source_class": {
+      "enum": ["INSTRUCTOR_MATERIAL", "HISTORICAL_RESOURCE", "ONLINE_SOURCE", "VERIFIED_EXTERNAL_MATERIAL", "AI_SYNTHESIS", "PROVISIONAL_INTERPRETATION", "APPROVED_COURSE_CONTENT"]
+    },
+    "author": {"type": ["string", "null"]},
+    "publication_date": {"type": ["string", "null"], "format": "date"},
+    "original_location": {"type": "string", "minLength": 1},
+    "local_path": {"type": "string", "minLength": 1},
+    "accessed_date": {"type": "string", "format": "date"},
+    "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "course_relevance": {"type": ["string", "null"]},
+    "intended_use": {"type": ["string", "null"]},
+    "verification_status": {"enum": ["UNVERIFIED", "CHECKSUM_VERIFIED", "SOURCE_CHECKED", "FACTUALLY_VERIFIED", "REJECTED"]},
+    "fidelity_status": {"enum": ["F0", "F1", "F2", "F3", "F4", "F5"]},
+    "copyright_status": {"enum": ["UNKNOWN", "INSTRUCTOR_OWNED", "LICENSED", "PUBLIC_DOMAIN", "FAIR_USE_REVIEW_REQUIRED", "RESTRICTED", "PERMISSION_GRANTED"]},
+    "approval_status": {"enum": ["DRAFT", "REVIEWED", "APPROVED", "SEALED", "SUPERSEDED"]},
+    "notes": {"type": ["string", "null"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "updated_at": {"type": "string", "format": "date-time"}
+  }
+}

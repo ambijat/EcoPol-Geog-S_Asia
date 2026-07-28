@@ -1,0 +1,131 @@
+[
+  {
+    "approval_status": "DRAFT",
+    "block_type": "COURSE_CHARTER",
+    "canonical_authority": "LOCAL_PRIVATE_RETROSPECTIVE_EVENT_RECORD",
+    "canonical_event_index": 1,
+    "certainty": "CONFIRMED",
+    "cryptographic_status": "NON_CANONICAL",
+    "decisions_taken": [
+      "Treat the instructor as the sole academic authority",
+      "Use a hash-linked course ledger for material course and workflow events"
+    ],
+    "event_time": "2026-07-20",
+    "event_time_precision": "DATE_ONLY",
+    "fidelity_status": "F2 — Source-checked",
+    "follow_up_actions": [
+      "Obtain instructor review before treating the preamble as approved course authority"
+    ],
+    "projection_type": "PUBLIC_REDACTED_PROJECTION",
+    "record_mode": "RETROSPECTIVE",
+    "summary": "The IS 529 N project established a governance preamble defining instructor authority, fidelity duties, documentation architecture, the course ledger, and the separation of the active project from its historical resource repository.",
+    "title": "Semester 2026 governance preamble established"
+  },
+  {
+    "approval_status": "REVIEWED",
+    "block_type": "RESOURCE_AUDIT",
+    "canonical_authority": "LOCAL_PRIVATE_RETROSPECTIVE_EVENT_RECORD",
+    "canonical_event_index": 2,
+    "certainty": "CONFIRMED",
+    "cryptographic_status": "NON_CANONICAL",
+    "decisions_taken": [
+      "Treat mechanical readability as distinct from factual, pedagogical, licensing, and accessibility verification"
+    ],
+    "event_time": "2026-07-20",
+    "event_time_precision": "DATE_ONLY",
+    "fidelity_status": "F2 — Source-checked",
+    "follow_up_actions": [
+      "Sanitise selected resources into traceable project-owned avatars"
+    ],
+    "projection_type": "PUBLIC_REDACTED_PROJECTION",
+    "record_mode": "RETROSPECTIVE",
+    "summary": "A structural and basic integrity audit observed 405 files occupying approximately 625 MiB, spanning modification years 2013–2025. It found no zero-byte files, broken symbolic links, exact SHA-256 duplicate groups, unreadable PDFs, or failed ZIP-container tests among inspected office and e-book files.",
+    "title": "Initial read-only audit of the historical resource repository"
+  },
+  {
+    "approval_status": "REVIEWED",
+    "block_type": "PEDAGOGICAL_DECISION",
+    "canonical_authority": "LOCAL_PRIVATE_RETROSPECTIVE_EVENT_RECORD",
+    "canonical_event_index": 3,
+    "certainty": "CONFIRMED",
+    "cryptographic_status": "NON_CANONICAL",
+    "decisions_taken": [
+      "Write every new or modified artifact only in the project folder",
+      "Keep the historical resource repository immutable"
+    ],
+    "event_time": "2026-07-20",
+    "event_time_precision": "DATE_ONLY",
+    "fidelity_status": "F1 — Structurally faithful",
+    "projection_type": "PUBLIC_REDACTED_PROJECTION",
+    "record_mode": "RETROSPECTIVE",
+    "summary": "All project-created and modified artifacts must remain in the active project folder. The historical resource repository may be inspected and copied from but must never be changed or used for generated files, caches, logs, indexes, conversions, or temporary artifacts.",
+    "title": "Historical resource repository designated strictly read-only"
+  },
+  {
+    "approval_status": "REVIEWED",
+    "block_type": "PEDAGOGICAL_DECISION",
+    "canonical_authority": "LOCAL_PRIVATE_RETROSPECTIVE_EVENT_RECORD",
+    "canonical_event_index": 4,
+    "certainty": "CONFIRMED",
+    "cryptographic_status": "NON_CANONICAL",
+    "decisions_taken": [
+      "Preserve immutable source lineage",
+      "Create sanitised avatars only in the project folder",
+      "Require separate verification and instructor review before pedagogical use"
+    ],
+    "event_time": "2026-07-20",
+    "event_time_precision": "DATE_ONLY",
+    "fidelity_status": "F1 — Structurally faithful",
+    "follow_up_actions": [
+      "Create a resource intake registry and process selected resources incrementally"
+    ],
+    "projection_type": "PUBLIC_REDACTED_PROJECTION",
+    "record_mode": "RETROSPECTIVE",
+    "summary": "Selected historical resources will be copied into the project, sanitised into new traceable avatars, verified, adapted for pedagogy, and reviewed before classroom or website use. Sanitisation alone does not confer factual accuracy or academic approval.",
+    "title": "Sanitised resource-avatar lifecycle adopted"
+  },
+  {
+    "approval_status": "REVIEWED",
+    "block_type": "PEDAGOGICAL_DECISION",
+    "canonical_authority": "LOCAL_PRIVATE_RETROSPECTIVE_EVENT_RECORD",
+    "canonical_event_index": 5,
+    "certainty": "CONFIRMED",
+    "cryptographic_status": "NON_CANONICAL",
+    "decisions_taken": [
+      "Map Lecture 1–15 to Week 1–15",
+      "Map Session A to Tuesday and Session B to Friday",
+      "Distinguish planned decks from evidence of classes actually conducted"
+    ],
+    "event_time": "2026-07-20",
+    "event_time_precision": "DATE_ONLY",
+    "fidelity_status": "F1 — Structurally faithful",
+    "projection_type": "PUBLIC_REDACTED_PROJECTION",
+    "record_mode": "RETROSPECTIVE",
+    "summary": "The course comprises fifteen weekly lecture units. Each week ordinarily has Session A on Tuesday from 09:00 to 11:00 and Session B on Friday from 09:00 to 11:00, normally supported by one presentation deck per session.",
+    "title": "Fifteen-week two-session teaching cadence recorded",
+    "topics_planned": [
+      "Fifteen weekly lecture units",
+      "Thirty scheduled sessions",
+      "Sixty scheduled contact hours"
+    ]
+  },
+  {
+    "approval_status": "REVIEWED",
+    "block_type": "VERSION_CONTROL_EVENT",
+    "canonical_authority": "LOCAL_PRIVATE_RETROSPECTIVE_EVENT_RECORD",
+    "canonical_event_index": 6,
+    "certainty": "CONFIRMED",
+    "cryptographic_status": "NON_CANONICAL",
+    "decisions_taken": [
+      "Use main as the initial local branch",
+      "Keep the historical resource repository outside project version-control writes"
+    ],
+    "event_time": "2026-07-20T21:35:23+05:30",
+    "event_time_precision": "EXACT",
+    "fidelity_status": "F2 — Source-checked",
+    "projection_type": "PUBLIC_REDACTED_PROJECTION",
+    "record_mode": "RETROSPECTIVE",
+    "summary": "The active project folder was initialised as a Git repository on branch main. The governance preamble was recorded in root commit <LOCAL_GIT_COMMIT> with no resource-repository changes.",
+    "title": "Project Git repository initialised and governance preamble committed"
+  }
+]

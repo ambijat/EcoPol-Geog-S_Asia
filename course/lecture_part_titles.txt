@@ -1,0 +1,31 @@
+# Historical title candidates for instructor review. Format: ID|Title
+L01A|South Asia as a Region
+L01B|South Asia as a Region
+L02A|Economic and Social Indicators of South Asia
+L02B|Economic Indicators in South Asia
+L03A|Agriculture and Food Security in South Asia
+L03B|Agriculture and Food Security in South Asia
+L04A|Wheat and Rice Cultivation in South Asia
+L04B|Wheat and Rice Cultivation in South Asia
+L05A|Commercial Crops in South Asia: Cotton and Sugarcane
+L05B|Commercial Crops in South Asia: Sugarcane
+L06A|Commercial Crops in South Asia: Tea Production in Sri Lanka and India
+L06B|Commercial Crops in South Asia: Rubber and Coconut in Sri Lanka
+L07A|Forest Resources of Bhutan and Nepal
+L07B|Forest Resources of Bhutan and Nepal
+L08A|Industrial Location and Growth: Industrial Regions and Iron and Steel Industry
+L08B|Industrial Location and Growth: Garments Industry in Bangladesh
+L09A|Pending instructor confirmation
+L09B|Pending instructor confirmation
+L10A|State-building in South Asia
+L10B|Colonial Legacy and Federalism in South Asia
+L11A|Borders and Conflict in South Asia
+L11B|Borders and Conflict in South Asia
+L12A|Transnational Boundary River Water Sharing: The Indus Water Treaty
+L12B|Transnational Boundary River Water Sharing: Indo-Nepal River Water Treaties
+L13A|Regional Security of South Asia
+L13B|Pending instructor confirmation
+L14A|Pending instructor confirmation
+L14B|Pending instructor confirmation
+L15A|Pending instructor confirmation
+L15B|Pending instructor confirmation

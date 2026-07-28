@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}Governance & Git Readiness{% endblock %}
+{% block content %}
+<header><div><p class="eyebrow">Read-only repository inspection</p><h1>Governance and Git readiness</h1><p>No automatic staging, commits, pushes, or canonical ledger writes.</p></div><span class="pill">{{ report.branch }}</span></header>
+<section class="metrics big"><span>{{ report.modified_files|length }} modified</span><span>{{ report.untracked_files|length }} untracked</span><span>{{ report.proposed_commit_bundle|length }} lecture files</span><span>{{ report.validation_state }}</span></section>
+<article class="panel"><h2>Latest commit</h2><code>{{ report.latest_commit }}</code><h3>Lecture {{ report.lecture_number }} proposed bundle</h3><table><tr><th>Path</th><th>Classification</th></tr>{% for item in report.selected_lecture_files %}<tr><td><code>{{ item.path }}</code></td><td>{{ item.classification }}</td></tr>{% else %}<tr><td colspan="2">No changed lecture files.</td></tr>{% endfor %}</table></article>
+<div class="notice">Automatic commit: disabled · Automatic push: disabled · Canonical ledger append: disabled</div>
+{% endblock %}

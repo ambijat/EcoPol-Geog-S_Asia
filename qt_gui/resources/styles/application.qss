@@ -1,0 +1,33 @@
+QWidget { color:#18323b; font-family:"Noto Sans","DejaVu Sans",sans-serif; font-size:13px; }
+QFrame#watermarkContainer { background:#f5f2ea; }
+QFrame#navigationRail { background:#102d3a; min-width:260px; max-width:260px; }
+QLabel#navigationBrand { color:#fffdf8; font:700 22px "Noto Serif"; padding:20px 12px 10px; }
+QLabel#boundaryLabel { color:#9fb6ba; border-top:1px solid #345662; padding:14px; }
+QListWidget { background:transparent; border:0; color:#cbdada; outline:0; padding:4px; }
+QListWidget::item { border-radius:7px; padding:10px 12px; margin:1px 3px; }
+QListWidget::item:selected { background:#1d5662; color:white; }
+QListWidget::item:hover { background:#1d4855; }
+QFrame#courseHeader { background:rgba(255,253,248,238); border-bottom:1px solid #d8ded9; padding:12px; }
+QLabel#courseTitle { color:#18323b; font:700 26px "Noto Serif"; }
+QLabel#viewTitle { color:#18323b; font:700 30px "Noto Serif"; margin:8px 0; }
+QLabel#viewSubtitle { color:#61757c; font-size:14px; margin-bottom:8px; }
+QLabel#sectionTitle { font:700 17px "Noto Serif"; }
+QLabel#eyebrow { color:#946c20; font-size:10px; font-weight:700; }
+QLabel#cardTitle,QLabel#partTitle { font:700 18px "Noto Serif"; color:#18323b; }
+QLabel#cardMeta { color:#61757c; font-size:11px; }
+QFrame#lectureCard,QGroupBox,QTableWidget,QTableView,QTreeWidget,QTextEdit,QTextBrowser,QLineEdit,QComboBox,QListWidget { background:rgba(255,253,248,246); border:1px solid #d3dcd7; border-radius:9px; }
+QFrame#lectureCard { min-height:270px; padding:10px; }
+QFrame#lectureCard[focusLecture="true"] { border-top:4px solid #d6a23d; }
+QGroupBox { font-weight:700; margin-top:10px; padding-top:18px; }
+QGroupBox::title { subcontrol-origin:margin; left:12px; padding:0 5px; }
+QHeaderView::section { background:#e7efeb; color:#315c58; padding:7px; border:0; border-right:1px solid #d3dcd7; font-weight:700; }
+QTableWidget { gridline-color:#d8ded9; alternate-background-color:#f0f3ef; }
+QTableView { gridline-color:#d8ded9; alternate-background-color:#f0f3ef; }
+QLabel#workspaceMetrics { background:rgba(231,239,235,230); border:1px solid #c6d5cf; border-radius:8px; padding:10px; }
+QPushButton { background:#156b68; color:white; border:0; border-radius:7px; padding:8px 13px; font-weight:700; }
+QPushButton:hover { background:#0f5957; }
+QPushButton:disabled { background:#a8b7b3; }
+QScrollArea { border:0; background:transparent; }
+QWidget#lectureForm { background:rgba(255,253,248,246); border-radius:9px; }
+QStatusBar { background:#e7efeb; color:#315c58; }
+QLabel#placeholderNote { background:rgba(255,253,248,238); border:1px dashed #b9c8c3; border-radius:9px; padding:22px; color:#61757c; }

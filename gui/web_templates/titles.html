@@ -1,0 +1,39 @@
+{% extends "base.html" %}{% block title %}Lecture Titles{% endblock %}
+{% block content %}
+<header><div><p class="eyebrow">Human-readable title control</p><h1>Lecture title management</h1><p>Review historical candidates, protect instructor decisions, and synchronise the two editable title registries.</p></div><span class="pill">15 weekly · 30 part titles</span></header>
+{% if message %}<p class="notice">{{ message }}</p>{% endif %}
+{% if errors %}<section class="notice error"><strong>No titles were changed.</strong><ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul></section>{% endif %}
+<section class="panel title-actions">
+  <form method="post" action="/titles/reload"><button>Reload lecture titles</button></form>
+  <form method="post" action="/titles/export"><button class="secondary">Export confirmed titles</button></form>
+  <p class="foot">Reload validates both files and creates a proposal. Export is atomic and preserves ignored `.bak` files.</p>
+</section>
+{% if proposals %}
+<section class="panel"><h2>Proposed title reload</h2>
+  <table><thead><tr><th>Target</th><th>Current</th><th>Proposed</th><th>Result</th></tr></thead><tbody>
+  {% for item in proposals %}<tr class="{{ 'conflict-row' if item.conflict }}"><td>{{ item.target_identifier }}</td><td>{{ item.current_title }}</td><td>{{ item.proposed_title }}</td><td>{{ item.reason }}</td></tr>{% endfor %}
+  </tbody></table>
+  <form method="post" action="/titles/reload/{{ batch_id }}/confirm"><button>Confirm non-conflicting changes</button></form>
+</section>
+{% endif %}
+<section class="stack">
+{% for pair in pairs %}
+  <article class="panel title-record">
+    <div class="title-record-heading"><div><span class="eyebrow">L{{ '%02d'|format(pair.lecture_number) }} · {{ pair.evidence_count }} evidence records</span><h2>{{ pair.weekly_title }}</h2></div><div><span class="pill">{{ pair.title_status }}</span><span class="pill">{{ 'CONFIRMED' if pair.title_confirmed else 'CONFIRMATION REQUIRED' }}</span></div></div>
+    <form method="post" action="/titles/LECTURE_PAIR/L{{ '%02d'|format(pair.lecture_number) }}" class="title-edit"><label>Weekly title<input name="title" value="{{ pair.weekly_title }}"></label><label class="check"><input type="checkbox" name="confirmed" value="1" {{ 'checked' if pair.title_confirmed }}> Instructor confirmed</label><button>Save weekly title</button></form>
+    <div class="part-title-grid">
+    {% for part in parts if part.lecture_pair_id == pair.id %}
+      <form method="post" action="/titles/LECTURE_PART/L{{ '%02d'|format(pair.lecture_number) }}{{ part.part }}" class="part-title-editor"><small>{{ part.scheduled_day }} · PART {{ part.part }}</small><label>Title<input name="title" value="{{ part.title }}"></label><span class="foot">{{ part.title_source }} · {{ part.title_status }}</span><label class="check"><input type="checkbox" name="confirmed" value="1" {{ 'checked' if part.title_confirmed }}> Instructor confirmed</label><button>Save Part {{ part.part }}</button></form>
+    {% endfor %}
+    </div>
+    <details><summary>View historical title evidence ({{ pair.evidence_count }})</summary>
+      <div class="evidence-list">
+      {% for item in evidence if item.lecture_pair_id == pair.id %}
+        <div><strong>{{ item.target_identifier }} · {{ item.extraction_confidence }}</strong><span>{{ item.extracted_title }}</span><small>{{ item.target_classification }} · {{ item.source_filename }} · SHA-256 {{ item.source_sha256[:12] }}…</small></div>
+      {% endfor %}
+      </div>
+    </details>
+  </article>
+{% endfor %}
+</section>
+{% endblock %}
