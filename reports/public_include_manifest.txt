@@ -272,6 +272,7 @@ course_artifacts/services/scan_service.py
 course_artifacts/services/visualization_service.py
 course_ledger/README.md
 course_ledger/drafts/README.md
+demo/index.html
 desktop/__init__.py
 desktop/app.py
 desktop/capture_acceptance.py

@@ -21,7 +21,7 @@ PUBLIC_ROOT_FILES = {
     "requirements-desktop.txt", "launch_cockpit.sh", "launch_cockpit.bat",
 }
 PUBLIC_PREFIXES = (
-    "course/", "docs/", "gui/", "public/",
+    "course/", "demo/", "docs/", "gui/", "public/",
     "resource_registry/", "schemas/",
     "scripts/", "templates/", "tests/", "qt_gui/", "course_artifacts/", "desktop/",
 )

@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A public, synthetic simulation of the IS529N Course Artifact Cockpit.">
+  <meta name="theme-color" content="#103f46">
+  <title>IS529N — Cockpit Simulation</title>
+  <style>
+    :root {
+      --ink: #15363b;
+      --soft: #526d71;
+      --teal: #0d4b50;
+      --teal-2: #18736e;
+      --paper: #f5f1e8;
+      --panel: #fffdf8;
+      --wash: #e5efec;
+      --gold: #d29a2f;
+      --line: #cbd8d4;
+      --danger: #813f35;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { height: 100%; }
+    body {
+      min-height: 100%;
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--sans);
+      font-size: 14px;
+    }
+    button, a { font: inherit; }
+    button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 2px;
+    }
+    button { color: inherit; }
+    .skip {
+      position: fixed;
+      top: -4rem;
+      left: 1rem;
+      z-index: 20;
+      padding: .65rem 1rem;
+      color: white;
+      background: var(--teal);
+    }
+    .skip:focus { top: .5rem; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 38px;
+      padding: .45rem 1rem;
+      color: #f8f5ed;
+      background: #242424;
+      border-bottom: 1px solid #111;
+    }
+    .topbar strong { letter-spacing: .01em; }
+    .topbar a { color: #d9e7e3; }
+    .simulation-note {
+      padding: .55rem 1rem;
+      color: #fff;
+      background: #81611f;
+      text-align: center;
+      font-size: .84rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .app {
+      display: grid;
+      grid-template-columns: 205px minmax(0, 1fr);
+      min-height: calc(100vh - 73px);
+    }
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      padding: 1.35rem 0 1rem;
+      color: #e9f2ef;
+      background: #0b3940;
+    }
+    .brand { padding: 0 1.2rem 1.2rem; }
+    .brand strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: 1.27rem;
+      line-height: 1.18;
+    }
+    .brand span {
+      display: block;
+      margin-top: .55rem;
+      color: #e1ad42;
+      font-size: .72rem;
+      font-weight: 700;
+    }
+    .side-label {
+      padding: .85rem 1.2rem .45rem;
+      color: #e1ad42;
+      font-size: .67rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .side-button {
+      width: 100%;
+      padding: .72rem 1.2rem;
+      border: 0;
+      border-left: 4px solid transparent;
+      color: #d7ece9;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+    }
+    .side-button:hover { background: rgba(255,255,255,.07); }
+    .side-button.active {
+      border-left-color: var(--gold);
+      color: #fff;
+      background: #205d63;
+      font-weight: 700;
+    }
+    .side-foot {
+      margin-top: auto;
+      padding: 1rem 1.2rem 0;
+      border-top: 1px solid rgba(255,255,255,.15);
+      color: #9dc7c5;
+      font-size: .67rem;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+    .workspace { min-width: 0; padding: 1rem; }
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(6.5rem, 1fr));
+      gap: .4rem;
+      margin-bottom: 1rem;
+      padding: .65rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+    .tool-button, .action {
+      min-height: 2.35rem;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      background: var(--teal-2);
+      color: #fff;
+      font-size: .76rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .tool-button:hover, .action:hover { background: var(--teal); }
+    .tool-button.active { border-color: var(--gold); box-shadow: inset 0 -3px var(--gold); }
+    .heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: .15rem .65rem 1rem;
+    }
+    .eyebrow {
+      margin: 0 0 .35rem;
+      color: #a66f0e;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { font-family: var(--serif); }
+    h1 { margin: 0; font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1.05; }
+    .lede { max-width: 48rem; margin: .65rem 0 0; color: var(--soft); font-size: 1rem; }
+    .count {
+      flex: 0 0 auto;
+      min-width: 7rem;
+      padding: .85rem;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--wash);
+      text-align: center;
+      font-weight: 700;
+    }
+    .count strong { display: block; font-family: var(--serif); font-size: 1.7rem; }
+    .view[hidden] { display: none; }
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(260px, .9fr);
+      gap: .5rem;
+    }
+    .panel {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: rgba(255,253,248,.88);
+      overflow: hidden;
+    }
+    .table-wrap { overflow-x: auto; min-height: 405px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: .75rem .65rem; border-bottom: 1px solid var(--line); text-align: left; }
+    th { background: #e3ece9; font-size: .75rem; white-space: nowrap; }
+    td { font-size: .78rem; }
+    tbody tr { cursor: pointer; }
+    tbody tr:hover { background: #f2ead9; }
+    tbody tr.selected { background: #dceae5; box-shadow: inset 4px 0 var(--gold); }
+    .title-cell { min-width: 15rem; font-weight: 700; }
+    .status {
+      display: inline-block;
+      padding: .18rem .45rem;
+      border: 1px solid #9cb8b2;
+      border-radius: 999px;
+      background: #edf5f2;
+      font-size: .67rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .status.incubating { border-color: #caa458; background: #fff4d8; }
+    .detail { padding: .8rem; }
+    .detail h2 { margin: 0 0 .65rem; font-size: 1.35rem; }
+    .detail dl { margin: 0; }
+    .detail dt { margin-top: .65rem; color: var(--soft); font-size: .68rem; font-weight: 800; text-transform: uppercase; }
+    .detail dd { margin: .15rem 0 0; overflow-wrap: anywhere; }
+    .academic-note {
+      margin-top: 1rem;
+      padding: .8rem;
+      border-left: 4px solid var(--gold);
+      background: #fff7e5;
+      line-height: 1.5;
+    }
+    .actionbar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .5rem;
+      margin-top: .5rem;
+      padding: .55rem;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--panel);
+    }
+    .action-group {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .35rem;
+    }
+    .action-group strong {
+      grid-column: 1 / -1;
+      color: var(--teal);
+      font-family: var(--serif);
+      font-size: .78rem;
+    }
+    .action { min-height: 2rem; background: #dfeae6; color: var(--teal); font-size: .68rem; }
+    .action:hover { color: #fff; }
+    .info-view {
+      padding: 1.2rem;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--panel);
+    }
+    .info-view h2 { margin: 0 0 .5rem; font-size: 1.7rem; }
+    .info-view > p { max-width: 55rem; color: var(--soft); }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .75rem;
+      margin-top: 1.2rem;
+    }
+    .card {
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--teal-2);
+      background: #fff;
+    }
+    .card h3 { margin: 0 0 .5rem; font-size: 1.1rem; }
+    .card p { margin: .35rem 0; line-height: 1.5; }
+    .relation {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: .7rem;
+      margin-top: 1.5rem;
+    }
+    .node {
+      min-height: 9rem;
+      padding: 1rem;
+      border: 2px solid var(--teal-2);
+      background: #fff;
+    }
+    .node.master { border-color: var(--gold); }
+    .node strong, .node span { display: block; }
+    .node span { margin-top: .4rem; color: var(--soft); }
+    .arrow { color: var(--gold); font-size: 1.8rem; }
+    .setting-list { max-width: 55rem; margin-top: 1rem; border-top: 1px solid var(--line); }
+    .setting {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: .75rem .25rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .setting span:last-child { color: var(--danger); font-weight: 700; }
+    dialog {
+      width: min(92vw, 38rem);
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--ink);
+      background: var(--panel);
+      box-shadow: 0 24px 70px rgba(0,0,0,.3);
+    }
+    dialog::backdrop { background: rgba(8,33,36,.64); }
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .8rem 1rem;
+      color: #fff;
+      background: var(--teal);
+    }
+    .modal-head h2 { margin: 0; font-size: 1.2rem; }
+    .close {
+      border: 0;
+      color: #fff;
+      background: transparent;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .modal-body { padding: 1rem; line-height: 1.55; }
+    .modal-body p:first-child { margin-top: 0; }
+    .toast {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 30;
+      max-width: min(25rem, calc(100vw - 2rem));
+      padding: .8rem 1rem;
+      border-left: 4px solid var(--gold);
+      color: #fff;
+      background: var(--teal);
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+    }
+    .toast[hidden] { display: none; }
+    @media (max-width: 980px) {
+      .toolbar { grid-template-columns: repeat(4, 1fr); }
+      .main-grid { grid-template-columns: 1fr; }
+      .table-wrap { min-height: auto; }
+      .actionbar { grid-template-columns: repeat(2, 1fr); }
+      .cards { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .topbar { align-items: flex-start; gap: .5rem; }
+      .app { display: block; }
+      .sidebar { padding: .8rem 0; }
+      .brand { padding-bottom: .5rem; }
+      .side-label, .side-foot { display: none; }
+      .side-nav { display: flex; overflow-x: auto; }
+      .side-button { flex: 0 0 auto; width: auto; border-left: 0; border-bottom: 4px solid transparent; }
+      .side-button.active { border-left: 0; border-bottom-color: var(--gold); }
+      .workspace { padding: .55rem; }
+      .toolbar { grid-template-columns: repeat(2, 1fr); }
+      .heading { display: block; padding-inline: .25rem; }
+      .count { display: inline-block; margin-top: .75rem; }
+      .actionbar { grid-template-columns: 1fr; }
+      .relation { grid-template-columns: 1fr; }
+      .arrow { justify-self: center; transform: rotate(90deg); }
+      .setting { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#workspace">Skip to workspace</a>
+  <header class="topbar">
+    <strong>IS529N — Economic and Political Geography of South Asia</strong>
+    <a href="../index.html">Project face</a>
+  </header>
+  <div class="simulation-note">PUBLIC SIMULATION · SYNTHETIC RECORDS · NO FILES OR DATABASE</div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="Artifact classes">
+      <div class="brand">
+        <strong>IS529N<br>Course Artifact Cockpit</strong>
+        <span>Bounded public demonstration</span>
+      </div>
+      <div class="side-label">Artifact control</div>
+      <nav class="side-nav">
+        <button class="side-button active" data-filter="all">Cockpit Home</button>
+        <button class="side-button" data-filter="pdf">Published PDFs</button>
+        <button class="side-button" data-filter="presentation">Presentation Workbench</button>
+        <button class="side-button" data-filter="map">Knowledge Maps</button>
+      </nav>
+      <div class="side-foot">Offline by design<br>No AI execution<br>Instructor governed</div>
+    </aside>
+
+    <main class="workspace" id="workspace">
+      <nav class="toolbar" aria-label="Cockpit views">
+        <button class="tool-button active" data-view="home">Cockpit Home</button>
+        <button class="tool-button" data-command="refresh">Refresh All</button>
+        <button class="tool-button" data-view="duplicates">Find Duplicates</button>
+        <button class="tool-button" data-view="relationships">Relationship Map</button>
+        <button class="tool-button" data-view="queue">Processing Queue</button>
+        <button class="tool-button" data-view="decisions">Instructor Decisions</button>
+        <button class="tool-button" data-view="settings">Settings</button>
+      </nav>
+
+      <section class="view" id="view-home">
+        <header class="heading">
+          <div>
+            <p class="eyebrow">Artifact foundation</p>
+            <h1 id="workspace-title">Course Artifact Cockpit</h1>
+            <p class="lede" id="workspace-description">A governed view of artifact identity, provenance, relationships, and instructor decisions.</p>
+          </div>
+          <div class="count"><strong id="artifact-count">4</strong><span>synthetic artifacts</span></div>
+        </header>
+        <div class="main-grid">
+          <section class="panel table-wrap" aria-label="Synthetic artifact census">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Artifact ID</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Form</th>
+                  <th scope="col">Inspection</th>
+                  <th scope="col">Instructor status</th>
+                  <th scope="col">Relations</th>
+                </tr>
+              </thead>
+              <tbody id="artifact-rows"></tbody>
+            </table>
+          </section>
+          <aside class="panel detail" aria-live="polite">
+            <h2>Persistent provenance</h2>
+            <dl id="artifact-detail"></dl>
+            <div class="academic-note" id="academic-note"></div>
+          </aside>
+        </div>
+        <div class="actionbar" aria-label="Artifact actions">
+          <div class="action-group"><strong>Inspect</strong><button class="action" data-action="inspect">Inspect</button><button class="action" data-action="preview">Preview</button></div>
+          <div class="action-group"><strong>Provenance</strong><button class="action" data-action="provenance">Show provenance</button><button class="action" data-action="relationships">Relationships</button></div>
+          <div class="action-group"><strong>Workflow</strong><button class="action" data-action="decision">Instructor decision</button><button class="action" data-action="queue">Send to queue</button></div>
+          <div class="action-group"><strong>Real application</strong><a class="action" href="../README.md#course-artifact-cockpit" style="display:grid;place-items:center;text-decoration:none">Install guide</a><button class="action" data-action="boundary">Public boundary</button></div>
+        </div>
+      </section>
+
+      <section class="view info-view" id="view-duplicates" hidden>
+        <p class="eyebrow">Comparison result</p>
+        <h2>No confirmed duplicate groups</h2>
+        <p>The 65-slide master and 15-slide synoptic companion share a lecture identity, but they serve different functions. Similarity is evidence for review, not permission to collapse artifacts.</p>
+        <div class="cards">
+          <article class="card"><h3>Identity first</h3><p>Each artifact keeps its own identifier, form, and provenance.</p></article>
+          <article class="card"><h3>Relationships explain</h3><p><em>Summarises</em> records the connection without declaring duplication.</p></article>
+          <article class="card"><h3>Instructor decides</h3><p>No automatic merge or deletion can settle an academic question.</p></article>
+        </div>
+      </section>
+
+      <section class="view info-view" id="view-relationships" hidden>
+        <p class="eyebrow">Lecture 1A relationship map</p>
+        <h2>One master, two bounded derivatives</h2>
+        <p>The graph preserves the accepted pilot master while making its fixed-format and synoptic derivatives legible.</p>
+        <div class="relation" aria-label="Artifact relationship diagram">
+          <div class="node master"><strong>65-slide F0 pilot master</strong><span>Editable inherited presentation</span><span>Teacher incubation continues</span></div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="node"><strong>15-slide synoptic companion</strong><span>Summarises</span><span>Overview layer, not replacement</span></div>
+          <span class="arrow" aria-hidden="true">↘</span>
+          <div class="node"><strong>65-page PDF counterpart</strong><span>Published as</span><span>Fixed-format derivative</span></div>
+        </div>
+      </section>
+
+      <section class="view info-view" id="view-queue" hidden>
+        <p class="eyebrow">Processing queue</p>
+        <h2>Nothing is being processed</h2>
+        <p>This public simulation has no server, filesystem access, uploads, background jobs, or AI execution. Queue actions only demonstrate the interface and disappear when the page is reloaded.</p>
+        <div class="cards">
+          <article class="card"><h3>Pending</h3><p id="queue-count">0 simulated items</p></article>
+          <article class="card"><h3>External writes</h3><p>Disabled</p></article>
+          <article class="card"><h3>Local state</h3><p>Not connected</p></article>
+        </div>
+      </section>
+
+      <section class="view info-view" id="view-decisions" hidden>
+        <p class="eyebrow">Academic authority</p>
+        <h2>Instructor decisions remain explicit</h2>
+        <p>Acceptance establishes the inherited master’s identity. It does not declare every slide correct, current, balanced, or ready for class.</p>
+        <div class="cards">
+          <article class="card"><h3>Accepted as pilot master</h3><p>65-slide F0 editable artifact</p><p><span class="status incubating">Teacher incubation</span></p></article>
+          <article class="card"><h3>Recognised as companion</h3><p>15-slide synoptic overview</p><p><span class="status">Not the master</span></p></article>
+          <article class="card"><h3>Classroom approval</h3><p>Not yet recorded</p><p><span class="status incubating">Instructor review required</span></p></article>
+        </div>
+      </section>
+
+      <section class="view info-view" id="view-settings" hidden>
+        <p class="eyebrow">Public configuration</p>
+        <h2>All real repositories are disconnected</h2>
+        <p>The installed cockpit can be configured with local roots. This demonstration deliberately contains neither those paths nor their hosted equivalents.</p>
+        <div class="setting-list">
+          <div class="setting"><span>Published PDFs</span><span>Simulation only</span></div>
+          <div class="setting"><span>Presentation workbench</span><span>Simulation only</span></div>
+          <div class="setting"><span>Lecture raw material</span><span>Not connected</span></div>
+          <div class="setting"><span>AI-assisted notes</span><span>Not connected</span></div>
+          <div class="setting"><span>Knowledge maps</span><span>Simulation only</span></div>
+          <div class="setting"><span>Spatial raw material</span><span>Not connected</span></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="detail-dialog">
+    <div class="modal-head"><h2 id="modal-title">Artifact action</h2><button class="close" aria-label="Close dialog">×</button></div>
+    <div class="modal-body" id="modal-body"></div>
+  </dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script>
+    const artifacts = [
+      {
+        id: "ART-CD5E0B1F4952",
+        title: "IS529N_L01A_HISTORICAL_INTAKE",
+        kind: "presentation",
+        form: "F0 · 65 slides",
+        locator: "PRESENTATION_WORKBENCH://lecture_01/part_a_tuesday/deck_source/pilot_master",
+        inspection: "Inspected",
+        status: "Teacher incubation",
+        relations: 2,
+        provenance: "Inherited editable presentation; accepted as the Lecture 1A pilot master.",
+        note: "Master identity is accepted. The teacher may retain, revise, merge, remove, or move material to notes before classroom approval."
+      },
+      {
+        id: "ART-D206F7A6A50B",
+        title: "IS529N_L01A_SYNOPTIC_COMPANION",
+        kind: "presentation",
+        form: "F1 · 15 slides",
+        locator: "PRESENTATION_WORKBENCH://lecture_01/part_a_tuesday/synoptic_companion",
+        inspection: "Inspected",
+        status: "Companion recognised",
+        relations: 1,
+        provenance: "Bounded overview derived from the Lecture 1A pilot master.",
+        note: "This is a synoptic layer over the 65-slide master. It is useful, but it is neither the master nor a replacement for teacher incubation."
+      },
+      {
+        id: "ART-94F52DDF3107",
+        title: "IS529N_L01A_FIXED_FORMAT_COUNTERPART",
+        kind: "pdf",
+        form: "PDF · 65 pages",
+        locator: "PUBLISHED_PDFS://lecture_01/part_a_tuesday/fixed_format_counterpart",
+        inspection: "Inspected",
+        status: "Not classroom-approved",
+        relations: 1,
+        provenance: "Fixed-format counterpart related to the inherited editable master.",
+        note: "Format correspondence does not establish academic readiness. Classroom approval remains an instructor decision."
+      },
+      {
+        id: "ART-87C113A409DE",
+        title: "LECTURE_01A_CONCEPT_RELATIONS",
+        kind: "map",
+        form: "Knowledge map",
+        locator: "KNOWLEDGE_MAPS://lecture_01/part_a_tuesday/concept_relations",
+        inspection: "Reviewed",
+        status: "Working aid",
+        relations: 2,
+        provenance: "Synthetic concept map demonstrating a supporting artifact class.",
+        note: "A map can support teaching judgement; it cannot stand in for the lecture artifact or its evidence."
+      }
+    ];
+
+    let selected = artifacts[0];
+    let currentFilter = "all";
+    let queueCount = 0;
+    const rows = document.querySelector("#artifact-rows");
+    const detail = document.querySelector("#artifact-detail");
+    const note = document.querySelector("#academic-note");
+    const count = document.querySelector("#artifact-count");
+    const dialog = document.querySelector("#detail-dialog");
+    const modalTitle = document.querySelector("#modal-title");
+    const modalBody = document.querySelector("#modal-body");
+    const toast = document.querySelector("#toast");
+
+    function escapeText(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      })[character]);
+    }
+
+    function filteredArtifacts() {
+      return currentFilter === "all" ? artifacts : artifacts.filter(item => item.kind === currentFilter);
+    }
+
+    function renderRows() {
+      const visible = filteredArtifacts();
+      if (!visible.includes(selected)) selected = visible[0] || artifacts[0];
+      count.textContent = visible.length;
+      rows.innerHTML = visible.map(item => `
+        <tr tabindex="0" data-id="${item.id}" class="${item.id === selected.id ? "selected" : ""}" aria-selected="${item.id === selected.id}">
+          <td>${escapeText(item.id)}</td>
+          <td class="title-cell">${escapeText(item.title)}</td>
+          <td>${escapeText(item.form)}</td>
+          <td>${escapeText(item.inspection)}</td>
+          <td><span class="status ${item.status.includes("incubation") || item.status.includes("approved") ? "incubating" : ""}">${escapeText(item.status)}</span></td>
+          <td>${item.relations}</td>
+        </tr>`).join("");
+      renderDetail();
+    }
+
+    function renderDetail() {
+      detail.innerHTML = `
+        <dt>Artifact</dt><dd>${escapeText(selected.id)}</dd>
+        <dt>Title</dt><dd>${escapeText(selected.title)}</dd>
+        <dt>Symbolic locator</dt><dd>${escapeText(selected.locator)}</dd>
+        <dt>Form</dt><dd>${escapeText(selected.form)}</dd>
+        <dt>Provenance</dt><dd>${escapeText(selected.provenance)}</dd>
+        <dt>Instructor status</dt><dd>${escapeText(selected.status)}</dd>`;
+      note.textContent = selected.note;
+    }
+
+    function chooseRow(target) {
+      const row = target.closest("tr[data-id]");
+      if (!row) return;
+      selected = artifacts.find(item => item.id === row.dataset.id);
+      renderRows();
+    }
+
+    rows.addEventListener("click", event => chooseRow(event.target));
+    rows.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        chooseRow(event.target);
+      }
+    });
+
+    document.querySelectorAll(".side-button").forEach(button => {
+      button.addEventListener("click", () => {
+        currentFilter = button.dataset.filter;
+        document.querySelectorAll(".side-button").forEach(item => item.classList.toggle("active", item === button));
+        showView("home");
+        renderRows();
+      });
+    });
+
+    function showView(name) {
+      document.querySelectorAll(".view").forEach(view => { view.hidden = view.id !== `view-${name}`; });
+      document.querySelectorAll(".tool-button[data-view]").forEach(button => button.classList.toggle("active", button.dataset.view === name));
+    }
+
+    document.querySelectorAll(".tool-button[data-view]").forEach(button => {
+      button.addEventListener("click", () => showView(button.dataset.view));
+    });
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.hidden = false;
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => { toast.hidden = true; }, 2600);
+    }
+
+    document.querySelector('[data-command="refresh"]').addEventListener("click", () => {
+      renderRows();
+      showToast("Synthetic census refreshed. No external source was contacted.");
+    });
+
+    function openDialog(title, body) {
+      modalTitle.textContent = title;
+      modalBody.innerHTML = body;
+      dialog.showModal();
+    }
+
+    document.querySelectorAll(".action[data-action]").forEach(button => {
+      button.addEventListener("click", () => {
+        const action = button.dataset.action;
+        if (action === "queue") {
+          queueCount += 1;
+          document.querySelector("#queue-count").textContent = `${queueCount} simulated item${queueCount === 1 ? "" : "s"}`;
+          showToast(`${selected.id} added to the simulated queue.`);
+          return;
+        }
+        if (action === "relationships") {
+          showView("relationships");
+          return;
+        }
+        const content = {
+          inspect: `<p><strong>${escapeText(selected.title)}</strong></p><p>${escapeText(selected.note)}</p><p>This simulation exposes metadata only; there is no underlying file to open.</p>`,
+          preview: `<p>A preview would normally be generated from the registered file.</p><p><strong>Public boundary:</strong> no real presentation, PDF, or image is bundled with this demonstration.</p>`,
+          provenance: `<p>${escapeText(selected.provenance)}</p><p><strong>Symbolic locator:</strong><br>${escapeText(selected.locator)}</p>`,
+          decision: `<p><strong>Recorded state:</strong> ${escapeText(selected.status)}</p><p>The demonstration does not write decisions. In the real cockpit, instructor judgement is recorded without silently changing the source artifact.</p>`,
+          boundary: `<p>This page contains four invented metadata records. It has no database, local paths, credentials, student information, copyrighted source files, uploads, analytics, or network calls.</p>`
+        };
+        openDialog(button.textContent.trim(), content[action]);
+      });
+    });
+
+    document.querySelector(".close").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", event => {
+      if (event.target === dialog) dialog.close();
+    });
+    renderRows();
+  </script>
+</body>
+</html>
