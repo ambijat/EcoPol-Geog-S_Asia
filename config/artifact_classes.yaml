@@ -1,0 +1,55 @@
+artifact_classes:
+  - code: PUBLISHED_PRESENTATION_PDF
+    label: Published Presentation PDFs
+    description: Classroom-facing presentation PDFs and governed published exports.
+    icon: PDF
+    display_order: 1
+    active: true
+    status: ACTIVE
+    accepted_extensions: [.pdf]
+    default_relationship_suggestions: [PUBLISHED_AS, EXPORT_OF, HOSTED_AT, LINKED_FROM_WIKIDOT]
+  - code: PRESENTATION_WORKBENCH
+    label: Presentation Workbench
+    description: ODP-first editable presentation masters, inherited PPTX files, and working versions.
+    icon: ODP
+    display_order: 2
+    active: true
+    status: ACTIVE
+    accepted_extensions: [.odp, .pptx, .ppt]
+    default_relationship_suggestions: [WORKING_VERSION_OF, SUPERSEDES, EXPORT_OF]
+  - code: FOUNDATIONAL_RESOURCE
+    label: Lecture Raw Material
+    description: Topic-organized folders containing books, chapters, articles, maps, datasets, reports, and historical teaching material.
+    icon: SRC
+    display_order: 3
+    active: true
+    status: ACTIVE
+    accepted_extensions: [.pdf, .docx, .odt, .txt, .md, .csv, .xlsx, .ods, .jpg, .jpeg, .png, .svg]
+    default_relationship_suggestions: [EXTRACTED_FROM, QUOTES, SUMMARISES, CORROBORATES]
+  - code: SPATIAL_RESOURCE
+    label: Spatial Raw Material
+    description: Country, regional, and cross-border source material organized by spatial scope and lecture. The horizontal counterpart to the topical Lecture Raw Material root.
+    icon: GEO
+    display_order: 6
+    active: true
+    status: ACTIVE
+    accepted_extensions: [.pdf, .docx, .odt, .txt, .md, .csv, .xlsx, .ods, .jpg, .jpeg, .png, .svg]
+    default_relationship_suggestions: [EXTRACTED_FROM, QUOTES, CORROBORATES, RELATES_TO_TOPIC]
+  - code: AI_GENERATED_ARTIFACT
+    label: AI-assisted LaTeX Notes
+    description: AI-assisted lecture notes maintained as LaTeX source files and PDF reading copies; LaTeX build auxiliaries are ignored.
+    icon: AI
+    display_order: 4
+    active: true
+    status: ACTIVE
+    accepted_extensions: [.tex, .pdf]
+    default_relationship_suggestions: [GENERATED_FROM, CANDIDATE_INGREDIENT_FOR]
+  - code: INSTRUCTOR_DEFINED_CLASS_5
+    label: Knowledge Maps and Visualisations
+    description: Portable Obsidian canvases, mind maps, graph-exchange files, Neo4j exports, and reviewed static visualisations. Live vaults and graph databases remain external.
+    icon: MAP
+    display_order: 5
+    active: true
+    status: ACTIVE
+    accepted_extensions: [.canvas, .mm, .xmind, .graphml, .gexf, .cypher, .json, .csv, .md, .svg, .png, .jpg, .jpeg, .pdf]
+    default_relationship_suggestions: [DERIVED_FROM, SUMMARISES, RELATES_TO_TOPIC, USED_IN_LECTURE]

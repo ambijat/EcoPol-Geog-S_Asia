@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IS529N Course Artifact Cockpit — a governed environment for producing and preserving the course Economic and Political Geography of South Asia.">
+  <meta name="theme-color" content="#103f46">
+  <meta property="og:title" content="IS529N Course Artifact Cockpit">
+  <meta property="og:description" content="A governed academic-content environment for Economic and Political Geography of South Asia.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23103f46'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-weight='700' fill='%23c9912c'%3E529N%3C/text%3E%3C/svg%3E">
+  <title>IS529N — Course Artifact Cockpit</title>
+  <style>
+    :root {
+      --ink: #16333a;
+      --ink-soft: #4e676c;
+      --teal: #103f46;
+      --teal-light: #e5efed;
+      --paper: #f5f1e7;
+      --paper-light: #fffdf7;
+      --gold: #c9912c;
+      --line: #cfd8d4;
+      --white: #ffffff;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Segoe UI", Arial, sans-serif;
+      --measure: 72rem;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: fixed;
+      left: 1rem;
+      top: -5rem;
+      z-index: 100;
+      padding: .7rem 1rem;
+      color: var(--white);
+      background: var(--teal);
+    }
+
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    .shell {
+      width: min(calc(100% - 2rem), var(--measure));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      color: var(--white);
+      background: var(--teal);
+      border-bottom: 4px solid var(--gold);
+    }
+
+    .masthead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding-block: 1rem;
+    }
+
+    .identity {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      text-decoration: none;
+    }
+
+    .monogram {
+      display: grid;
+      width: 3.25rem;
+      height: 3.25rem;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .55);
+      color: var(--gold);
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+
+    .identity strong,
+    .identity span {
+      display: block;
+    }
+
+    .identity strong {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+    }
+
+    .identity span {
+      color: #c8dbd9;
+      font-size: .78rem;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: .35rem 1.2rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    nav a {
+      color: #e9f1f0;
+      font-size: .84rem;
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      color: var(--gold);
+    }
+
+    .hero {
+      padding-block: clamp(4rem, 9vw, 7.5rem);
+      background: var(--paper-light);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 .75rem;
+      color: #8c641d;
+      font-size: .76rem;
+      font-weight: 750;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin-top: 0;
+      font-family: var(--serif);
+      line-height: 1.12;
+    }
+
+    h1 {
+      max-width: 14ch;
+      margin-bottom: 1.35rem;
+      font-size: clamp(2.65rem, 7vw, 5.6rem);
+      font-weight: 700;
+      letter-spacing: -.025em;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      font-size: clamp(2rem, 4vw, 3.15rem);
+    }
+
+    h3 {
+      margin-bottom: .55rem;
+      font-size: 1.35rem;
+    }
+
+    .lede {
+      max-width: 48rem;
+      margin: 0;
+      color: var(--ink-soft);
+      font-family: var(--serif);
+      font-size: clamp(1.15rem, 2vw, 1.45rem);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem 1.4rem;
+      margin-top: 2rem;
+      color: var(--ink-soft);
+      font-size: .9rem;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: var(--teal);
+      font-weight: 750;
+    }
+
+    .status::before {
+      width: .65rem;
+      height: .65rem;
+      background: #3e8063;
+      border-radius: 50%;
+      content: "";
+    }
+
+    section {
+      padding-block: clamp(3.5rem, 7vw, 6rem);
+    }
+
+    section + section {
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(11rem, .42fr) minmax(0, 1fr);
+      gap: 2rem 4rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-head p {
+      max-width: 46rem;
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 1.08rem;
+    }
+
+    .principle {
+      padding: clamp(1.6rem, 4vw, 2.7rem);
+      color: var(--white);
+      background: var(--teal);
+      border-left: .45rem solid var(--gold);
+    }
+
+    .principle p {
+      max-width: 50rem;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+      line-height: 1.45;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      padding: 1.45rem;
+      background: var(--paper-light);
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--gold);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--ink-soft);
+    }
+
+    .number {
+      display: block;
+      margin-bottom: 1rem;
+      color: #8c641d;
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 700;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: workflow;
+    }
+
+    .workflow li {
+      position: relative;
+      min-height: 9rem;
+      padding: 2.8rem 1rem 1rem;
+      background: var(--paper-light);
+      border: 1px solid var(--line);
+      border-right: 0;
+      counter-increment: workflow;
+    }
+
+    .workflow li:last-child {
+      border-right: 1px solid var(--line);
+    }
+
+    .workflow li::before {
+      position: absolute;
+      top: .8rem;
+      left: 1rem;
+      color: var(--gold);
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 700;
+      content: counter(workflow, decimal-leading-zero);
+    }
+
+    .workflow strong {
+      display: block;
+      margin-bottom: .25rem;
+      font-family: var(--serif);
+    }
+
+    .workflow span {
+      color: var(--ink-soft);
+      font-size: .87rem;
+      line-height: 1.45;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+
+    .lecture-block {
+      padding: 1.7rem;
+      background: var(--paper-light);
+      border: 1px solid var(--line);
+    }
+
+    .lecture-block .day {
+      color: #8c641d;
+      font-size: .75rem;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .lecture-block p {
+      margin-bottom: 0;
+      color: var(--ink-soft);
+    }
+
+    .relation {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: stretch;
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+
+    .relation article {
+      padding: 1.4rem;
+      background: var(--teal-light);
+      border: 1px solid #bdd0cc;
+    }
+
+    .relation strong,
+    .relation span {
+      display: block;
+    }
+
+    .relation span {
+      margin-top: .4rem;
+      color: var(--ink-soft);
+    }
+
+    .relation .arrow {
+      align-self: center;
+      color: var(--gold);
+      font-size: 1.8rem;
+    }
+
+    .classes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+    }
+
+    .class-row {
+      display: grid;
+      grid-template-columns: 3rem 1fr;
+      gap: .8rem;
+      padding: 1.2rem;
+      background: var(--paper-light);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .class-row:nth-child(even) {
+      border-right: 0;
+    }
+
+    .class-row b {
+      color: var(--gold);
+      font-family: var(--serif);
+      font-size: 1.2rem;
+    }
+
+    .class-row span {
+      color: var(--ink-soft);
+    }
+
+    .state-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper-light);
+    }
+
+    .state-table th,
+    .state-table td {
+      padding: 1rem;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .state-table th {
+      width: 13rem;
+      color: var(--teal);
+      font-family: var(--serif);
+    }
+
+    .state-table td {
+      color: var(--ink-soft);
+    }
+
+    .repository-map {
+      margin: 0;
+      padding: 1.5rem;
+      overflow-x: auto;
+      color: #dce9e7;
+      background: #102d33;
+      border-left: .35rem solid var(--gold);
+      font: .9rem/1.75 "SFMono-Regular", Consolas, monospace;
+    }
+
+    .closing {
+      color: var(--white);
+      background: var(--teal);
+    }
+
+    .closing .section-head p {
+      color: #c9d9d7;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .8rem;
+    }
+
+    .button {
+      display: inline-block;
+      padding: .75rem 1rem;
+      color: var(--teal);
+      background: var(--gold);
+      border: 1px solid var(--gold);
+      font-weight: 750;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      color: var(--white);
+      background: transparent;
+      border-color: #90aaa7;
+    }
+
+    footer {
+      padding-block: 1.6rem;
+      color: #bdcfcc;
+      background: #0a2e34;
+      font-size: .82rem;
+    }
+
+    footer .shell {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: .8rem 2rem;
+    }
+
+    @media (max-width: 54rem) {
+      .masthead,
+      .section-head {
+        display: block;
+      }
+
+      nav {
+        margin-top: 1rem;
+      }
+
+      nav ul {
+        justify-content: flex-start;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow li,
+      .workflow li:last-child {
+        min-height: auto;
+        border-right: 1px solid var(--line);
+        border-bottom: 0;
+      }
+
+      .workflow li:last-child {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .section-head h2 {
+        margin-bottom: 1rem;
+      }
+    }
+
+    @media (max-width: 40rem) {
+      .split,
+      .relation,
+      .classes {
+        grid-template-columns: 1fr;
+      }
+
+      .relation .arrow {
+        justify-self: center;
+        transform: rotate(90deg);
+      }
+
+      .class-row,
+      .class-row:nth-child(even) {
+        border-right: 1px solid var(--line);
+      }
+
+      .state-table th,
+      .state-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .state-table th {
+        padding-bottom: .25rem;
+        border-bottom: 0;
+      }
+
+      .state-table td {
+        padding-top: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="shell masthead">
+      <a class="identity" href="#top" aria-label="IS529N home">
+        <span class="monogram" aria-hidden="true">529N</span>
+        <span>
+          <strong>IS529N</strong>
+          <span>Course Artifact Cockpit</span>
+        </span>
+      </a>
+      <nav aria-label="Main navigation">
+        <ul>
+          <li><a href="#purpose">Purpose</a></li>
+          <li><a href="#architecture">Architecture</a></li>
+          <li><a href="#artifacts">Artifacts</a></li>
+          <li><a href="#lecture">Lecture pilot</a></li>
+          <li><a href="#state">Current state</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="hero" id="top">
+      <div class="shell">
+        <p class="eyebrow">Economic and Political Geography of South Asia</p>
+        <h1>A course built as a living scholarly record.</h1>
+        <p class="lede">IS529N is a governed academic-content environment for discovering, preserving, relating, strengthening, and producing course artifacts—while keeping the instructor’s judgement at the centre.</p>
+        <div class="hero-meta">
+          <span>Postgraduate / MA</span>
+          <span>15 weekly lecture units</span>
+          <span>Tuesday Part A + Friday Part B</span>
+          <span class="status">Shareable freeze · July 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <section id="purpose">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">01 · Purpose</p>
+            <h2>From scattered files to teachable knowledge</h2>
+          </div>
+          <p>Historical decks, published PDFs, books, maps, evidence notes, hosted materials, and new analysis belong to one intellectual history. This project makes their identities and relationships visible without silently rewriting the past.</p>
+        </div>
+        <div class="principle">
+          <p>Technical validity is not academic approval. The system prepares evidence and preserves lineage; the instructor decides what is true, useful, and ready to teach.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">02 · Architecture</p>
+            <h2>Three working layers, one course</h2>
+          </div>
+          <p>The interfaces have distinct jobs. They do not compete for authority and none replaces academic judgement.</p>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <span class="number">A</span>
+            <h3>Artifact cockpit</h3>
+            <p>A native desktop workspace for repository archaeology, scanning, candidate inspection, registration, provenance, and relationships.</p>
+          </article>
+          <article class="card">
+            <span class="number">B</span>
+            <h3>Production cockpit</h3>
+            <p>A browser workspace for lecture pairs, evidence metadata, slide planning, validation, class records, and bounded generation.</p>
+          </article>
+          <article class="card">
+            <span class="number">C</span>
+            <h3>Native production path</h3>
+            <p>A PySide6 migration path for the lecture-production workflow, developed in parallel against the browser cockpit’s acceptance baseline.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="workflow-title">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">03 · Method</p>
+            <h2 id="workflow-title">A bounded scholarly workflow</h2>
+          </div>
+          <p>The project joins archaeology-first preservation with classroom-backward production: begin with what exists, then work toward the next viable lecture.</p>
+        </div>
+        <ol class="workflow">
+          <li><strong>Discover</strong><span>Read source locations without reorganising or ingesting them.</span></li>
+          <li><strong>Inspect</strong><span>Identify candidates, duplicates, formats, and present condition.</span></li>
+          <li><strong>Register</strong><span>Give governed artifacts stable identity and symbolic location.</span></li>
+          <li><strong>Relate</strong><span>Record publication, derivation, support, and summary relationships.</span></li>
+          <li><strong>Teach</strong><span>Build, review, approve, conduct, and preserve the lecture record.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="artifacts">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">04 · Artifact ontology</p>
+            <h2>Six classes keep unlike things distinct</h2>
+          </div>
+          <p>A deck, a source note, a map, and a published PDF may support the same lecture, but they are not interchangeable. Classification protects meaning.</p>
+        </div>
+        <div class="classes">
+          <div class="class-row"><b>01</b><div><h3>Published PDFs</h3><span>Fixed-format teaching and publication artifacts.</span></div></div>
+          <div class="class-row"><b>02</b><div><h3>Presentation workbench</h3><span>Editable presentation masters and controlled working versions.</span></div></div>
+          <div class="class-row"><b>03</b><div><h3>Lecture raw material</h3><span>Books, articles, extracts, evidence packets, and topic resources.</span></div></div>
+          <div class="class-row"><b>04</b><div><h3>AI-assisted notes</h3><span>Provisional synthesis requiring source and instructor review.</span></div></div>
+          <div class="class-row"><b>05</b><div><h3>Knowledge maps</h3><span>Conceptual structures and portable relationship views.</span></div></div>
+          <div class="class-row"><b>06</b><div><h3>Spatial material</h3><span>Maps, country and regional evidence, and geographic datasets.</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lecture">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">05 · Course production</p>
+            <h2>Fifteen weeks, paired by design</h2>
+          </div>
+          <p>Each weekly unit is developed as a connected Tuesday–Friday teaching pair. Editable decks, classroom PDFs, teaching briefs, source maps, verification records, and post-class records form the complete deliverable.</p>
+        </div>
+        <div class="split">
+          <article class="lecture-block">
+            <span class="day">Tuesday · Part A · 9:00–11:00</span>
+            <h3>Frame and establish</h3>
+            <p>Introduce the historical, spatial, conceptual, and evidentiary architecture of the weekly problem.</p>
+          </article>
+          <article class="lecture-block">
+            <span class="day">Friday · Part B · 9:00–11:00</span>
+            <h3>Extend and interrogate</h3>
+            <p>Deepen the argument through regional comparison, political economy, evidence, and discussion.</p>
+          </article>
+        </div>
+
+        <div class="relation" aria-label="Lecture 1A master and synoptic companion relationship">
+          <article>
+            <strong>65-slide Lecture 1A pilot master</strong>
+            <span>The inherited F0 editable master. Its identity is accepted; its content remains under teacher incubation.</span>
+          </article>
+          <span class="arrow" aria-hidden="true">→</span>
+          <article>
+            <strong>15-slide synoptic companion</strong>
+            <span>An overview layer that summarises the master. It is neither a shortened master nor a replacement.</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="state">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">06 · Current state</p>
+            <h2>Frozen for sharing, open for teaching</h2>
+          </div>
+          <p>The software-and-governance project has reached a shareable freeze. Academic content remains alive: the teacher continues to retain, revise, merge, remove, or move material to notes.</p>
+        </div>
+        <table class="state-table">
+          <tbody>
+            <tr><th scope="row">Project state</th><td><strong>SHAREABLE_FREEZE</strong> — stable, validated, and ready for a bounded handoff.</td></tr>
+            <tr><th scope="row">Validation</th><td>137 automated tests passing; repository validator at zero errors and zero warnings; nine-block ledger verified.</td></tr>
+            <tr><th scope="row">Academic state</th><td>Lecture 1A master accepted for identity and incubation, not declared classroom-complete.</td></tr>
+            <tr><th scope="row">Sharing</th><td>Self-authored project material is dedicated under CC0 1.0: no rights reserved.</td></tr>
+            <tr><th scope="row">Private boundary</th><td>Student data, credentials, restricted assessments, machine-local state, and imported source files stay outside the public projection.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="map-title">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">07 · Repository</p>
+            <h2 id="map-title">A legible working structure</h2>
+          </div>
+          <p>The public repository contains the system, public-safe governance, templates, tests, and controlled course structure. Local databases and source repositories remain local.</p>
+        </div>
+        <pre class="repository-map" aria-label="Repository directory map"><code>IS529N/
+├── course/                 lecture-pair production workspace
+├── course_artifacts/       artifact domain and persistence
+├── desktop/                native artifact cockpit
+├── gui/                    browser production cockpit
+├── qt_gui/                 native production migration
+├── resource_registry/      governed source identities
+├── schemas/                stable data contracts
+├── scripts/                validation and maintenance tools
+├── templates/              controlled teaching templates
+├── tests/                  automated acceptance evidence
+├── docs/                   public-safe operating doctrine
+└── index.html              this public project face</code></pre>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Culmination principle</p>
+            <h2>Clarity before complexity.</h2>
+          </div>
+          <p>The project succeeds when historical fidelity, scholarly evidence, instructor judgement, technical reproducibility, and public responsibility remain connected without being collapsed into one another.</p>
+        </div>
+        <div class="actions">
+          <a class="button" href="README.md">Read the repository guide</a>
+          <a class="button secondary" href="docs/SHAREABLE_FREEZE_PROTOCOL.md">View the freeze protocol</a>
+          <a class="button secondary" href="LICENSE">Read the CC0 dedication</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      <span>IS529N · Economic and Political Geography of South Asia</span>
+      <span>Instructor-governed · Locally operated · Freely shareable</span>
+    </div>
+  </footer>
+</body>
+</html>

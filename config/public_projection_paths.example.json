@@ -1,0 +1,19 @@
+{
+  "redactions": [
+    {
+      "category": "ACTIVE_PROJECT_ROOT",
+      "source": "REPLACE_WITH_ABSOLUTE_ACTIVE_PROJECT_ROOT",
+      "replacement": "<ACTIVE_PROJECT_ROOT>"
+    },
+    {
+      "category": "HISTORICAL_RESOURCE_REPOSITORY",
+      "source": "REPLACE_WITH_ABSOLUTE_HISTORICAL_RESOURCE_REPOSITORY",
+      "replacement": "<HISTORICAL_RESOURCE_REPOSITORY>"
+    },
+    {
+      "category": "LOCAL_INSTRUCTOR_ARCHIVE",
+      "source": "REPLACE_WITH_ABSOLUTE_LOCAL_INSTRUCTOR_ARCHIVE",
+      "replacement": "<LOCAL_INSTRUCTOR_ARCHIVE>"
+    }
+  ]
+}

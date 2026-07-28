@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "protected_read_only_paths": [],
+  "artifact_roots": {
+    "AI_GENERATED_ARTIFACT": {
+      "access_mode": "read_write",
+      "allow_inside_project": true,
+      "allow_shared_root": false,
+      "enabled": true,
+      "path": ""
+    },
+    "FOUNDATIONAL_RESOURCE": {
+      "access_mode": "read_only",
+      "allow_inside_project": false,
+      "allow_shared_root": false,
+      "enabled": true,
+      "path": ""
+    },
+    "INSTRUCTOR_DEFINED_CLASS_5": {
+      "access_mode": "read_write",
+      "allow_inside_project": true,
+      "allow_shared_root": false,
+      "enabled": true,
+      "path": ""
+    },
+    "PRESENTATION_WORKBENCH": {
+      "access_mode": "read_write",
+      "allow_inside_project": true,
+      "allow_shared_root": false,
+      "enabled": true,
+      "path": ""
+    },
+    "PUBLISHED_PRESENTATION_PDF": {
+      "access_mode": "read_only",
+      "allow_inside_project": false,
+      "allow_shared_root": false,
+      "enabled": true,
+      "path": ""
+    },
+    "SPATIAL_RESOURCE": {
+      "access_mode": "read_only",
+      "allow_inside_project": false,
+      "allow_shared_root": false,
+      "enabled": true,
+      "path": ""
+    }
+  }
+}

@@ -1,0 +1,231 @@
+version: 1
+course_code: IS529N
+authority: INSTRUCTOR_REVIEW_REQUIRED
+derived_from: PUBLISHED_PRESENTATION_PDF
+unassigned_policy: RETAIN_IN_00_REVIEW_UNASSIGNED
+
+lecture_parts:
+  - id: IS529N-L01A
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture1a.pdf
+    title: South Asia as a Region
+    topics:
+      - {code: A01_REGION_CONCEPT, label: Region and the definition of South Asia}
+      - {code: A02_KNOWLEDGE_SOURCES, label: Puranic, Greek, foreign, medieval and colonial geographical knowledge}
+      - {code: A03_ANTHROPOSPHERE, label: Peoples, culture, language, caste and civilisation}
+      - {code: A04_REGIONAL_POLITICAL_ECONOMY, label: Population, economy, poverty, conflict and democracy}
+
+  - id: IS529N-L01B
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture1b.pdf
+    title: The Himalayas and the Making of South Asia
+    topics:
+      - {code: B01_HIMALAYAN_GEOLOGY, label: Plate tectonics, orogeny and Himalayan geology}
+      - {code: B02_PHYSIOGRAPHY, label: Physiographic regions and delimitation}
+      - {code: B03_MONSOON_CLIMATE, label: Monsoon, climate and agro-ecological regions}
+      - {code: B04_INDIAN_OCEAN, label: Indian Ocean geography, trade and civilisation}
+
+  - id: IS529N-L02A
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture2a.pdf
+    title: Economic and Social Indicators of South Asia
+    topics:
+      - {code: A01_AREA_POPULATION, label: Land area, land use and population}
+      - {code: A02_DEMOGRAPHY_HEALTH, label: Fertility, mortality, nutrition and life expectancy}
+      - {code: A03_URBANISATION_DENSITY, label: Urbanisation, population growth and density}
+      - {code: A04_WATER_SANITATION, label: Drinking water and sanitation}
+
+  - id: IS529N-L02B
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture2b.pdf
+    title: Economic Indicators in South Asia
+    topics:
+      - {code: B01_GROWTH_INCOME, label: GDP, growth, per-capita income and savings}
+      - {code: B02_SECTORAL_ECONOMY, label: Agriculture, manufacturing, industry and services}
+      - {code: B03_TRADE_INVESTMENT, label: Trade, imports, exports, FDI and reserves}
+      - {code: B04_PUBLIC_FINANCE, label: Tax, public consumption, education, health and military expenditure}
+
+  - id: IS529N-L03A
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture3a.pdf
+    title: Agriculture in South Asia
+    topics:
+      - {code: A01_AGRICULTURAL_STRUCTURE, label: Agricultural value, major crops and regional production}
+      - {code: A02_AGRICULTURAL_TRADE, label: Agricultural exports and imports}
+      - {code: A03_LABOUR_PRODUCTIVITY, label: Employment, gender and agricultural productivity}
+      - {code: A04_LANDHOLDINGS_LANDUSE, label: Landholdings, cropland and agricultural land use}
+
+  - id: IS529N-L03B
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture3b.pdf
+    title: Food Security in South Asia
+    topics:
+      - {code: B01_FOOD_SECURITY_INDICATORS, label: Food availability, access, utilisation and stability}
+      - {code: B02_NUTRITION, label: Undernourishment, anaemia and dietary adequacy}
+      - {code: B03_FOOD_POLICY, label: Food-security policy and trade}
+      - {code: B04_CEREALS_PULSES, label: Cereal, pulse, paddy and wheat supply, yield and area}
+
+  - id: IS529N-L04A
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture4a.pdf
+    title: Wheat and Rice Cultivation in South Asia
+    topics:
+      - {code: A01_WHEAT_RICE_REGIONAL, label: Regional wheat and rice production, acreage and trade}
+      - {code: A02_RICE_WHEAT_SYSTEM, label: Indo-Gangetic rice–wheat system and consortium}
+      - {code: A03_PAKISTAN_WHEAT, label: Pakistan wheat production, irrigation, pricing and constraints}
+
+  - id: IS529N-L04B
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture4b.pdf
+    title: Rice and Wheat in Bangladesh and Pakistan
+    topics:
+      - {code: B01_BANGLADESH_WHEAT, label: Bangladesh wheat, heat and production fluctuations}
+      - {code: B02_BANGLADESH_RICE, label: Aman, Aus and Boro rice systems}
+      - {code: B03_CROPPING_CALENDAR, label: Cropping seasons, calendars and multiple cropping}
+      - {code: B04_PAKISTAN_RICE, label: Pakistan rice production}
+
+  - id: IS529N-L05A
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture5a.pdf
+    title: Cotton in South Asia
+    topics:
+      - {code: A01_COTTON_DATA, label: Cotton production, acreage, yield and trade}
+      - {code: A02_COTTON_PAKISTAN, label: Pakistan cotton cultivation and economy}
+      - {code: A03_COTTON_INDIA, label: Indian cotton farming, policy and industry}
+      - {code: A04_COTTON_PROCESSING, label: Cotton processing, oilseed and textile linkages}
+
+  - id: IS529N-L05B
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture5b.pdf
+    title: Sugarcane in South Asia
+    topics:
+      - {code: B01_SUGARCANE_DATA, label: Sugarcane production, acreage, yield and trade}
+      - {code: B02_SUGARCANE_INDIA, label: Indian sugarcane cultivation, policy and processing}
+      - {code: B03_SUGARCANE_PAKISTAN, label: Pakistan sugarcane production and industry}
+      - {code: B04_SUGAR_INDUSTRY, label: Sugar markets, mills and labour conditions}
+
+  - id: IS529N-L06A
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture6a.pdf
+    title: Tea and Sri Lankan Agriculture
+    topics:
+      - {code: A01_SRI_LANKA_AGRICULTURE, label: Sri Lankan agriculture, land use and policy}
+      - {code: A02_TEA_PRODUCTION, label: Tea production, acreage, yield and cultivation}
+      - {code: A03_TEA_TRADE, label: Tea marketing, exports and destinations}
+      - {code: A04_TEA_INDIA, label: Indian tea estates and producing districts}
+
+  - id: IS529N-L06B
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture6b.pdf
+    title: Rubber and Coconut in South Asia
+    topics:
+      - {code: B01_RUBBER_SRI_LANKA, label: Sri Lankan rubber cultivation, trade and policy}
+      - {code: B02_RUBBER_INDIA, label: Indian natural-rubber production}
+      - {code: B03_COCONUT, label: Coconut production, uses, industry and challenges}
+
+  - id: IS529N-L07A
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture7a.pdf
+    title: Forest Resources of Bhutan
+    topics:
+      - {code: A01_BHUTAN_FOREST_TYPES, label: Bhutan forest cover, types and ecology}
+      - {code: A02_BHUTAN_FOREST_GOVERNANCE, label: Forest law, regulation and institutions}
+      - {code: A03_BHUTAN_FOREST_ECONOMY, label: Forest products, industry and livelihoods}
+      - {code: A04_BHUTAN_CONSERVATION, label: Biodiversity and conservation}
+
+  - id: IS529N-L07B
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture7b.pdf
+    title: Forestry in Nepal
+    topics:
+      - {code: B01_NEPAL_FOREST_TYPES, label: Nepal forest zones, cover and ecology}
+      - {code: B02_NEPAL_AGROFORESTRY, label: Agroforestry and rural livelihoods}
+      - {code: B03_NEPAL_COMMUNITY_FORESTRY, label: Community forestry and governance}
+      - {code: B04_NEPAL_CONSERVATION, label: Protected areas and forest policy}
+
+  - id: IS529N-L07C
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture7c.pdf
+    title: Mineral Resources of Afghanistan
+    topics:
+      - {code: C01_RESOURCE_ECONOMICS, label: Resource economics, rents and development}
+      - {code: C02_RESOURCE_POLITICAL_ECONOMY, label: Resources, governance, corruption and conflict}
+      - {code: C03_AFGHAN_GEOLOGY, label: Afghanistan geology and geomorphic divisions}
+      - {code: C04_AFGHAN_MINERALS, label: Mineral deposits, mining policy and major mines}
+
+  - id: IS529N-L08A
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture8a.pdf
+    title: Industrial Location, Regions and Iron and Steel
+    topics:
+      - {code: A01_INDUSTRIAL_LOCATION, label: Industrial location and manufacturing competitiveness}
+      - {code: A02_INDUSTRIAL_COMPLEXES, label: Industrial complexes, estates and linkages}
+      - {code: A03_INDUSTRIAL_CORRIDORS, label: Industrial regions and corridors}
+      - {code: A04_IRON_STEEL, label: Iron and steel location, production and constraints}
+
+  - id: IS529N-L08B
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture8b.pdf
+    title: Garment Industry in Bangladesh
+    topics:
+      - {code: B01_GARMENT_GROWTH, label: Garment-industry growth, trade and globalisation}
+      - {code: B02_GARMENT_LABOUR, label: Labour, wages and working conditions}
+      - {code: B03_GARMENT_SAFETY, label: Rana Plaza, fire and industrial safety}
+      - {code: B04_EPZ_GLOBAL_VALUE_CHAINS, label: EPZs, sourcing and global value chains}
+
+  - id: IS529N-L08C
+    presentation: PUBLISHED_PRESENTATION_PDF://lecture8c.pdf
+    title: Services and IT Industry
+    topics:
+      - {code: C01_SERVICE_ECONOMY, label: Service-sector structure, growth and trade}
+      - {code: C02_ICT_ITES, label: ICT, IT-enabled services and e-governance}
+      - {code: C03_FDI_PROFESSIONAL_SERVICES, label: FDI and professional services}
+      - {code: C04_TOURISM_LOGISTICS, label: Tourism, shipping, ports, warehousing and construction}
+
+  - id: IS529N-L10A
+    presentation: PUBLISHED_PRESENTATION_PDF://LECTURE10a.pdf
+    title: State, Territory and Political Geography
+    topics:
+      - {code: A01_FUNCTIONAL_STATE, label: Hartshorne, Ratzel and the functional state}
+      - {code: A02_CENTRIPETAL_CENTRIFUGAL, label: Centripetal and centrifugal forces}
+      - {code: A03_BOUNDARIES_FRONTIERS, label: Boundaries, frontiers, territory and sovereignty}
+      - {code: A04_STATE_FORMATION, label: Colonial state formation and Indian independence}
+      - {code: A05_STATE_REORGANISATION, label: Indian state reorganisation and Pakistan One Unit}
+
+  - id: IS529N-L10B
+    presentation: PUBLISHED_PRESENTATION_PDF://LECTURE10b.pdf
+    title: Comparative Federalism
+    topics:
+      - {code: B01_FEDERALISM_THEORY, label: Federalism, federation and territorial power}
+      - {code: B02_INDIA_PAKISTAN_FEDERALISM, label: Comparative federalism in India and Pakistan}
+      - {code: B03_ETHNIC_CONFLICT, label: Federalism, ethnicity, secession and unit design}
+      - {code: B04_SRI_LANKA_FEDERALISM, label: Federalism and ethnic conflict in Sri Lanka}
+
+  - id: IS529N-L11A
+    presentation: PUBLISHED_PRESENTATION_PDF://LECTURE11a.pdf
+    title: India–Bangladesh Borders and Enclaves
+    topics:
+      - {code: A01_BORDER_THEORY, label: Borders, identity and geopolitical theory}
+      - {code: A02_BENGAL_ENCLAVES, label: Cooch Behar, Rangpur and Bengal enclaves}
+      - {code: A03_LAND_BOUNDARY_AGREEMENT, label: India–Bangladesh agreements and enclave exchange}
+      - {code: A04_BORDER_MANAGEMENT, label: Border violence, management and regional politics}
+
+  - id: IS529N-L11B
+    presentation: PUBLISHED_PRESENTATION_PDF://LECTURE11b.pdf
+    title: Afghanistan Boundaries and the Durand Line
+    topics:
+      - {code: B01_GREAT_GAME_BOUNDARIES, label: Anglo-Russian rivalry and Afghan boundary making}
+      - {code: B02_DURAND_HISTORY, label: Durand agreement, demarcation and territorial impact}
+      - {code: B03_PASHTUNISTAN, label: Pashtun territoriality and political aftermath}
+      - {code: B04_DURAND_CONTEMPORARY, label: Soviet intervention, Taliban and War on Terror}
+
+  - id: IS529N-L12A
+    presentation: PUBLISHED_PRESENTATION_PDF://LECTURE12a.pdf
+    title: Hydropolitics and the Indus Water Treaty
+    topics:
+      - {code: A01_HYDROPOLITICS, label: Hydrocracy, hydro-hegemony and water scarcity}
+      - {code: A02_RIVER_BASIN_GOVERNANCE, label: Transboundary river basins and governance}
+      - {code: A03_INDUS_TREATY_HISTORY, label: Indus Water Treaty negotiations and World Bank mediation}
+      - {code: A04_INDUS_TREATY_POLITICS, label: Treaty provisions, disputes and perceptions}
+
+  - id: IS529N-L12B
+    presentation: PUBLISHED_PRESENTATION_PDF://LECTURE12b.pdf
+    title: India–Nepal River-Water Treaties
+    topics:
+      - {code: B01_INDIA_NEPAL_WATER_RELATIONS, label: India–Nepal water relations and hydro-asymmetry}
+      - {code: B02_KOSI_GANDAK, label: Kosi and Gandak treaties}
+      - {code: B03_KARNALI_MAHAKALI, label: Karnali and Mahakali projects and treaties}
+      - {code: B04_NEPAL_WATER_POLITICS, label: Mistrust, constitutional politics and benefit sharing}
+
+  - id: IS529N-L13
+    presentation: PUBLISHED_PRESENTATION_PDF://LECTURE13.pdf
+    title: Regional Security of South Asia
+    topics:
+      - {code: A01_SECURITY_STUDIES, label: International security studies and securitisation}
+      - {code: A02_RSCT, label: Regional Security Complex Theory}
+      - {code: A03_SOUTH_ASIAN_SECURITY, label: South Asian regional security complex}
+      - {code: A04_AFGHANISTAN_SECURITY, label: Afghanistan and the War on Terror}
+      - {code: A05_INDIA_RISE, label: India’s rise and regional transformation}
