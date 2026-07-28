@@ -13,7 +13,7 @@ from course_ledger import read_blocks, verify_blocks
 
 
 class LedgerPreservationTests(unittest.TestCase):
-    def test_existing_nine_block_chain_and_first_eight_history_are_preserved(self) -> None:
+    def test_existing_ten_block_chain_and_first_eight_history_are_preserved(self) -> None:
         ledger_path = PROJECT_ROOT / "course_ledger" / "ledger.jsonl"
         if not ledger_path.is_file():
             self.skipTest(
@@ -24,7 +24,7 @@ class LedgerPreservationTests(unittest.TestCase):
         before = ledger_path.read_bytes()
         with ledger_path.open("r", encoding="utf-8") as handle:
             blocks = read_blocks(handle)
-        self.assertEqual(len(blocks), 9)
+        self.assertEqual(len(blocks), 10)
         self.assertEqual(verify_blocks(blocks), [])
         self.assertEqual(
             blocks[7]["content_hash"],
@@ -37,6 +37,18 @@ class LedgerPreservationTests(unittest.TestCase):
         self.assertEqual(
             blocks[8]["previous_block_hash"],
             blocks[7]["content_hash"],
+        )
+        self.assertEqual(blocks[9]["block_number"], 10)
+        self.assertEqual(blocks[9]["block_type"], "PROJECT_MILESTONE")
+        self.assertEqual(blocks[9]["approved_by"], "Instructor")
+        self.assertEqual(blocks[9]["approval_status"], "APPROVED")
+        self.assertEqual(
+            blocks[9]["previous_block_hash"],
+            blocks[8]["content_hash"],
+        )
+        self.assertEqual(
+            blocks[9]["content_hash"],
+            "b400eee7a9895a1b70ffc70d78c8877ce62b4c80fd504320f0cb09127cdedad3",
         )
         self.assertEqual(ledger_path.read_bytes(), before)
         first_eight_blocks = b"".join(before.splitlines(keepends=True)[:8])
