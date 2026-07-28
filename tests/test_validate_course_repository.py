@@ -33,10 +33,10 @@ class ValidateRepositoryTests(unittest.TestCase):
     def test_repository_validation_accepts_controlled_empty_scaffold(self) -> None:
         result = validate_repository(self.root)
         self.assertTrue(result["valid"], result["errors"])
-        self.assertEqual(result["summary"]["ledger_block_count"], 9)
+        self.assertEqual(result["summary"]["ledger_block_count"], 10)
         self.assertEqual(
             result["summary"]["ledger_chain_tip"],
-            "0d97e7b8b2dbf76e56a0a57b433662e5b66d5d0be9f58a261bf399736da164d1",
+            "b400eee7a9895a1b70ffc70d78c8877ce62b4c80fd504320f0cb09127cdedad3",
         )
         self.assertEqual(result["summary"]["resource_record_count"], 0)
 
