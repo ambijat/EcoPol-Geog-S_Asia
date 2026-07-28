@@ -3,7 +3,7 @@ document_title: Lecture 1A teacher incubation record
 course_code: IS 529 N
 lecture_identifier: IS529N-L01-A
 date: 2026-07-28
-status: ACTIVE_INSTRUCTOR_INCUBATION
+status: PAUSED_PENDING_CLUSTER_REVIEW
 target_artifact: ART-CD5E0B1F4952
 supporting_synopsis: ART-D206F7A6A50B
 fidelity_status: F0
@@ -22,10 +22,12 @@ master.
 
 ## Incubation rule
 
-Preserve the accepted master unchanged. Review it slide by slide and cluster by
-cluster. Create a working derivative only from explicit teacher decisions.
+Preserve the accepted master unchanged. Review it cluster by cluster. Use an
+individual slide reference only to support cluster-level judgement or identify
+a specific defect. Do not create a separate administrative ruling for every
+slide. Create a working derivative only from explicit teacher decisions.
 
-For every slide, record one primary treatment:
+For each proposed cluster, record one preliminary treatment:
 
 - `RETAIN`
 - `REVISE`
@@ -54,17 +56,40 @@ Then record:
 | KC06 | 57–60 | Comparative indicators | NOT_STARTED |
 | Closing material | 61–65 | Johnson frame and comparative indicator appendix | NOT_STARTED |
 
-## First bounded incubation session
+These ranges are intake census partitions, not confirmed academic clusters.
+The comparison-led architecture is recorded in
+`LECTURE_1A_CLUSTER_MAPPING.md`.
 
-1. Review slides 1–2 for lecture identity and scope.
-2. Enter KC01 and review slides 3–18 one slide at a time.
-3. Do not rewrite the remaining clusters during this session.
-4. Use the 15-slide synopsis only as a whole-lecture orientation map.
-5. Stop after recording teacher decisions; generation of revised slides is a
+## First bounded cluster-mapping session
+
+1. Preserve and fingerprint the 65-slide canonical master.
+2. Use each synopsis slide as a candidate conceptual heading.
+3. Compare those headings with the content, sequence and teaching functions of
+   all 65 inherited slides.
+4. Record a provisional ten-cluster architecture, gaps, overlaps, misplaced
+   material and factual-verification priorities.
+5. Stop after cluster-level analysis; generation of revised slides remains a
    separate authorised action.
 
 ## Current decision boundary
 
-No inherited slide has been approved, rejected or removed by this record.
+No proposed cluster or inherited slide has been approved, rejected or removed
+by this record.
 No classroom PDF or F4 state is authorised. The next action belongs to the
-teacher inside the incubation review.
+teacher: confirm, change or reject the proposed cluster architecture before any
+working derivative is generated.
+
+## Pause and resume gate
+
+The cluster-mapping stage was paused on 2026-07-28 after its provisional record,
+integrity checks and repository evidence were completed.
+
+Work may resume only after an instructor direction that does at least one of
+the following:
+
+1. confirms the proposed cluster architecture;
+2. changes named cluster titles or boundaries;
+3. returns the mapping for a specified correction; or
+4. authorises a bounded factual-verification pass.
+
+Silence or resumption of technical work does not imply academic confirmation.

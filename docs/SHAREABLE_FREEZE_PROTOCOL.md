@@ -95,7 +95,7 @@ in a later-work record rather than added to the frozen project.
 
 As of 2026-07-28, the project is `SHAREABLE_FREEZE`. The candidate allowlist is
 current, all 229 automated tests and three subtests pass, repository validation
-reports zero errors and zero warnings, the ten-block ledger verifies, and the
+reports zero errors and zero warnings, the eleven-block ledger verifies, and the
 public projection dry run passes. Self-authored project material is freely
 shareable under CC0 1.0.
 Lecture 1A teacher incubation remains open and must stay truthfully represented

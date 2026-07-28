@@ -14,6 +14,7 @@ course/lecture_part_titles.txt
 course/lecture_titles.txt
 course/lectures/README.md
 course/lectures/lecture_01/INSTRUCTOR_PILOT_MASTER_REVIEW.md
+course/lectures/lecture_01/LECTURE_1A_CLUSTER_MAPPING.md
 course/lectures/lecture_01/PILOT_INTAKE.md
 course/lectures/lecture_01/TEACHER_INCUBATION.md
 course/lectures/lecture_01/part_a_tuesday/classroom_pdf/.gitkeep

@@ -2,14 +2,14 @@
   "authoritative": false,
   "canonical_authority": "LOCAL_PRIVATE_RECORDS",
   "document_type": "PUBLIC_PROJECTION_MANIFEST",
-  "generation_timestamp": "2026-07-28T08:04:14+00:00",
+  "generation_timestamp": "2026-07-28T08:25:57+00:00",
   "projection_status": "PUBLIC_REDACTED_PROJECTION",
   "records": [
     {
       "canonical_source": "<ACTIVE_PROJECT_ROOT>/SEMESTER2026_Course_Governance_Preamble.md",
       "canonical_source_sha256": "befdd646dad35b2c3d5eb01f1978907edae10eb4c46e7655356c52d0f418fc67",
       "checksum_label": "PUBLIC_PROJECTION_FILE_SHA256",
-      "generation_timestamp": "2026-07-28T08:04:14+00:00",
+      "generation_timestamp": "2026-07-28T08:25:57+00:00",
       "projection_status": "PUBLIC_REDACTED_PROJECTION",
       "public_output": "public/governance/SEMESTER2026_Course_Governance_Preamble_PUBLIC.md",
       "public_projection_sha256": "b2038550924fad5bd706fa5c33a8c520276396f25e149431f4b49dd38de3228b",
@@ -22,24 +22,24 @@
     },
     {
       "canonical_source": "<ACTIVE_PROJECT_ROOT>/course_ledger/ledger.jsonl",
-      "canonical_source_sha256": "09b0f25a8b5967bd6f043d3182d0302a22a788e594633691e029a962db7877ed",
+      "canonical_source_sha256": "b72d4cd4bb686f0d42130af68c345235060f352a748a782cc00db7895954dad6",
       "checksum_label": "PUBLIC_PROJECTION_FILE_SHA256",
-      "generation_timestamp": "2026-07-28T08:04:14+00:00",
+      "generation_timestamp": "2026-07-28T08:25:57+00:00",
       "projection_status": "PUBLIC_REDACTED_PROJECTION",
       "public_output": "public/ledger/ledger_public.jsonl",
-      "public_projection_sha256": "d88cc952af04fbca580269663371e2a16a858884d63aef92e79ae441185663ea",
+      "public_projection_sha256": "10ca6362b6329feb06457e92afe3d6b0310adbb33991e4b12743dee5f1029dec",
       "redaction_categories": {
         "HISTORICAL_RESOURCE_REPOSITORY": 1,
-        "LOCAL_GIT_COMMIT_IDENTIFIER": 8
+        "LOCAL_GIT_COMMIT_IDENTIFIER": 10
       },
-      "redaction_count": 9,
+      "redaction_count": 11,
       "validation_status": "PASSED"
     },
     {
       "canonical_source": "<ACTIVE_PROJECT_ROOT>/course_ledger/retrospective_events_2026-07-20.json",
       "canonical_source_sha256": "f432b4b92e3b4857f4f1079bd03345ea48f72c6da0f66d344d76c9d16a39406c",
       "checksum_label": "PUBLIC_PROJECTION_FILE_SHA256",
-      "generation_timestamp": "2026-07-28T08:04:14+00:00",
+      "generation_timestamp": "2026-07-28T08:25:57+00:00",
       "projection_status": "PUBLIC_REDACTED_PROJECTION",
       "public_output": "public/ledger/retrospective_events_2026-07-20_PUBLIC.json",
       "public_projection_sha256": "36057ae0b389e5856e9387010c3a4af4dd7c397cceb73021493428f12173cdd5",
