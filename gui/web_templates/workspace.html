@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% block title %}Lecture {{ lecture_number }} Workspace{% endblock %}
+{% block content %}
+<header><div><p class="eyebrow">Economic and Political Geography of South Asia</p><h1>{{ pair.weekly_title }}</h1><p>{{ pair.lecture_id }} · Week {{ pair.week }} · IS529N Semester 2026 Paired Lecture Production Cockpit</p></div><span class="pill">{{ pair.title_status }}</span></header>
+<section class="part-pair">{% for part in parts %}<article><small>{{ part.scheduled_day }} · {{ part.scheduled_time }}</small><h2>{{ part.title }}</h2><p>{{ part.identifier }}</p><div class="status-row"><span>{{ part.lifecycle_status }}</span><span>{{ part.fidelity_status }}</span><span>{{ part.approval_status }}</span></div></article>{% endfor %}</section>
+<form method="post" class="panel form-grid">
+  <label class="wide">Weekly title<input value="{{ pair.weekly_title }}" readonly><span class="foot">Managed through <a href="/titles">Lecture Titles</a> so confirmation precedence is preserved.</span></label>
+  <label class="wide">Central question<textarea name="weekly_central_question">{{ pair.weekly_central_question }}</textarea></label>
+  <label class="wide">Weekly argument<textarea name="weekly_argument">{{ pair.weekly_argument }}</textarea></label>
+  <label class="wide">Relationship between parts<textarea name="relationship_between_parts">{{ pair.relationship_between_parts }}</textarea></label>
+  <label>Concepts introduced in A<textarea name="concepts_introduced_in_a">{{ pair.concepts_introduced_in_a }}</textarea></label>
+  <label>Applications developed in B<textarea name="applications_developed_in_b">{{ pair.applications_developed_in_b }}</textarea></label>
+  <label>Shared resources<textarea name="shared_resources">{{ pair.shared_resources }}</textarea></label>
+  <label>Duplication warnings<textarea name="duplication_warnings">{{ pair.duplication_warnings }}</textarea></label>
+  <label>Unresolved gaps<textarea name="unresolved_gaps">{{ pair.unresolved_gaps }}</textarea></label>
+  <label>Assessment alignment<textarea name="assessment_alignment">{{ pair.assessment_alignment }}</textarea></label>
+  <label>Instructor status<select name="instructor_status"><option>NOT_REVIEWED</option><option>RETURNED</option><option>INSTRUCTOR_APPROVED</option></select></label>
+  <button>Save lecture architecture</button>
+</form>
+{% endblock %}

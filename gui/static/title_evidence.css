@@ -1,0 +1,18 @@
+.evidence-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.evidence-list div {
+  display: grid;
+  background: #f1f4f0;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 10px;
+}
+
+.evidence-list small {
+  color: var(--muted);
+}

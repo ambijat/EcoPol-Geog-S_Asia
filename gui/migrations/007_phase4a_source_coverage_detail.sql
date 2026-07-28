@@ -1,0 +1,9 @@
+ALTER TABLE source_coverage_reconstructions ADD COLUMN concept TEXT NOT NULL DEFAULT '';
+ALTER TABLE source_coverage_reconstructions ADD COLUMN present_in_article INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE source_coverage_reconstructions ADD COLUMN present_in_historical_slide INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE source_coverage_reconstructions ADD COLUMN present_in_working_note INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE source_coverage_reconstructions ADD COLUMN present_in_slide_plan INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE source_coverage_reconstructions ADD COLUMN alignment TEXT NOT NULL DEFAULT 'UNRESOLVED';
+ALTER TABLE source_coverage_reconstructions ADD COLUMN recommended_action TEXT NOT NULL DEFAULT 'REQUIRES_FURTHER_REVIEW';
+ALTER TABLE source_coverage_reconstructions ADD COLUMN page_references TEXT NOT NULL DEFAULT '';
+ALTER TABLE source_coverage_reconstructions ADD COLUMN analysis_notes TEXT NOT NULL DEFAULT '';

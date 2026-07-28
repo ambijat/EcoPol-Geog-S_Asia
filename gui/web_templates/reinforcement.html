@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% block title %}Lecture Reinforcement Workspace{% endblock %}
+{% block content %}
+<header class="reinforcement-header">
+  <div>
+    <p class="eyebrow">Browser-first · Lecture 1A · KC01 pilot</p>
+    <h1>Lecture Reinforcement Workspace</h1>
+    <p>Renew the historical lecture through source alignment, alternative knowledge patterns, instructor selection and rehearsal.</p>
+  </div>
+  <span class="pill persistent-status">{{ cluster.cluster_id }} · {{ cluster.status }}</span>
+</header>
+
+{% if message %}<p class="notice" role="status">{{ message }}</p>{% endif %}
+{% if error %}<p class="notice error" role="alert">{{ error }}</p>{% endif %}
+
+<section class="panel helicopter" aria-labelledby="helicopter-title">
+  <div>
+    <p class="eyebrow">Owner-level view</p>
+    <h2 id="helicopter-title">South Asia as a Region</h2>
+    <dl class="helicopter-facts">
+      <div><dt>Course</dt><dd>Economic and Political Geography of South Asia</dd></div>
+      <div><dt>Lecture</dt><dd>L01A</dd></div><div><dt>Part</dt><dd>A</dd></div>
+      <div><dt>Day</dt><dd>Tuesday</dd></div><div><dt>Historical deck</dt><dd>lecture1a.pdf</dd></div>
+      <div><dt>Resource group</dt><dd>LEC_RES_1</dd></div><div><dt>Current cluster</dt><dd>KC01</dd></div>
+      <div><dt>Current lecture version</dt><dd>v0.4</dd></div><div><dt>Cluster status</dt><dd>{{ cluster.status }}</dd></div>
+    </dl>
+  </div>
+  <div class="status-table-wrap">
+    <table class="compact-status"><tbody>
+      <tr><th>Historical lecture</th><td>Available</td></tr>
+      <tr><th>Resource cluster</th><td>{{ 'Indexed' if resources else workflow.resources }}</td></tr>
+      <tr><th>Current cluster</th><td>KC01</td></tr>
+      <tr><th>Knowledge units</th><td>{{ counts.knowledge_units }}</td></tr>
+      <tr><th>Candidate patterns</th><td>{{ counts.patterns }}</td></tr>
+      <tr><th>Reinforced slides</th><td>{{ counts.reinforced_slides }}</td></tr>
+      <tr><th>Rehearsal</th><td>{{ rehearsal.status if rehearsal else workflow.rehearsal }}</td></tr>
+      <tr><th>Accepted clusters</th><td>{{ counts.accepted_clusters }} of 6</td></tr>
+      <tr><th>Next lecture version</th><td>Locked</td></tr>
+    </tbody></table>
+  </div>
+</section>
+
+<section class="decision-queue panel" aria-labelledby="decision-title">
+  <div><p class="eyebrow">Academic decisions only</p><h2 id="decision-title">Decisions Required From Me</h2></div>
+  {% if decision_queue %}<ul>{% for decision in decision_queue %}<li>{{ decision }}</li>{% endfor %}</ul>
+  {% else %}<p class="empty">No currently exposed academic decision. Continue to the next ready stage.</p>{% endif %}
+</section>
+
+<nav class="workflow-rail" aria-label="Reinforcement stages">
+  <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action">
+    <input type="hidden" name="command" value="OPEN_HISTORICAL"><input type="hidden" name="return_stage" value="historical">
+    <button class="workflow-step {{ workflow.historical|lower }}"><b>1</b><span>Open Historical Lecture<small>{{ workflow.historical }}</small></span></button>
+  </form>
+  {% set stages = [
+    ('2','clusters','Select Knowledge Cluster',workflow.cluster),
+    ('3','resources','Find Aligned Resources',workflow.resources),
+    ('4','units','Extract Knowledge Units',workflow.units),
+    ('5','patterns','Generate Knowledge Patterns',workflow.patterns),
+    ('6','choice','Choose Pattern',workflow.choice),
+    ('7','slides','Reinforce Slides',workflow.slides),
+    ('8','rehearsal','Rehearse Cluster',workflow.rehearsal),
+    ('9','acceptance','Accept Cluster',workflow.acceptance),
+    ('10','build','Build Next Lecture Version',workflow.build)
+  ] %}
+  {% for number,key,label,state in stages %}
+    {% if state == 'LOCKED' %}<button class="workflow-step locked" disabled><b>{{ number }}</b><span>{{ label }}<small>LOCKED</small></span></button>
+    {% else %}<a class="workflow-step {{ state|lower }} {{ 'active' if stage == key }}" href="?view=legacy&amp;stage={{ key }}"><b>{{ number }}</b><span>{{ label }}<small>{{ state }}</small></span></a>{% endif %}
+  {% endfor %}
+</nav>
+
+{% if stage == 'overview' %}
+<section class="panel stage-intro"><h2>Begin with the inherited lecture</h2><p>The workflow preserves the historical sequence as pedagogical memory. Open slides 3–18 read-only, then select KC01.</p></section>
+
+{% elif stage == 'historical' %}
+<section class="stage-heading"><div><p class="eyebrow">Stage 1</p><h2>Historical slides 3–18</h2></div><span class="pill">Read-only original</span></section>
+<section class="historical-grid">
+{% for slide in historical_slides %}
+  <article class="panel historical-card">
+    <div class="thumbnail-frame">
+      {% if slide.thumbnail_available %}<img loading="lazy" src="/lectures/{{ lecture_route_id }}/reinforcement/historical/{{ slide.id }}/thumbnail" alt="Historical slide {{ slide.number }} thumbnail">
+      {% else %}<div class="thumbnail-missing">Thumbnail unavailable</div>{% endif %}
+    </div>
+    <div class="slide-copy"><small>Slide {{ slide.number }} · {{ slide.visual_type }} · {{ slide.relationship }}</small><h3>{{ slide.title }}</h3>
+      <details><summary>Extracted text and source references</summary><p class="extracted-text">{{ slide.text }}</p>{% if slide.references %}<ul>{% for reference in slide.references %}<li>{{ reference }}</li>{% endfor %}</ul>{% else %}<p class="foot">No visible source reference extracted.</p>{% endif %}</details>
+      <p class="status-row"><span>{{ slide.status }}</span><span>{{ slide.slide_reinforcement_state }}</span>{% if slide.decision %}<span>{{ slide.decision.decision }}</span>{% endif %}</p>
+      <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="decision-form">
+        <input type="hidden" name="command" value="HISTORICAL_DECISION"><input type="hidden" name="target_id" value="{{ slide.id }}"><input type="hidden" name="return_stage" value="historical">
+        <label>Decision<select name="value">{% for action in ['KEEP','UPDATE','EXPAND','MERGE','SPLIT','REORDER','REPLACE','CREATE_NEW','REMOVE','MOVE_TO_NOTES'] %}<option{% if slide.decision.decision == action %} selected{% endif %}>{{ action }}</option>{% endfor %}</select></label>
+        <label>Instructor note<input name="comment" value="{{ slide.decision.comment if slide.decision else '' }}"></label><button>Record Decision</button>
+      </form>
+      {% if slide.ai_packet_eligible and not slide.ai_packet %}
+      <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="packet-prepare">
+        <input type="hidden" name="command" value="PREPARE_AI_UPDATE_PACKET"><input type="hidden" name="target_id" value="{{ slide.id }}"><input type="hidden" name="return_stage" value="historical">
+        <button>Prepare Update Corpus</button>
+      </form>
+      {% endif %}
+      {% if slide.ai_support_override_eligible and not slide.ai_packet %}
+      <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="packet-prepare">
+        <input type="hidden" name="command" value="PREPARE_AI_UPDATE_PACKET"><input type="hidden" name="target_id" value="{{ slide.id }}"><input type="hidden" name="support_override" value="1"><input type="hidden" name="return_stage" value="historical">
+        <button>Prepare AI Support Anyway</button>
+      </form>
+      {% endif %}
+      {% if slide.ai_packet %}
+      {% set packet = slide.ai_packet %}
+      {% set revision = packet.active_revision %}
+      {% set proposal = revision.instructor_edit_json if revision and revision.instructor_edit_json else (revision.validated_result_json if revision else {}) %}
+      <section class="ai-update-bridge" aria-label="AI Update Packet bridge">
+        <div class="packet-heading"><div><p class="eyebrow">Instructor-interpolated loop · Slide 3 pilot</p><h4>{{ packet.packet_id }}</h4></div><span class="pill">{{ packet.lifecycle_state }}</span></div>
+        <p><span class="pill">{{ packet.draft_label }}</span> <span class="pill">{{ packet.review_label }}</span></p>
+        <dl class="slide-helicopter"><div><dt>Instructor decision</dt><dd>{{ packet.historical_action }}</dd></div><div><dt>Corpus</dt><dd>{{ 'READY' if packet.lifecycle_state not in ['UNREVIEWED','DECISION_RECORDED'] else 'NOT_READY' }}</dd></div><div><dt>Packet</dt><dd>{{ 'COPIED' if packet.packet_copied_at else 'NOT_COPIED' }}</dd></div><div><dt>AI result</dt><dd>{{ 'VALIDATED' if packet.lifecycle_state in ['AI_RESULT_VALIDATED','INSTRUCTOR_EDITING','MANUALLY_APPLIED','REINFORCED_SLIDE_ATTACHED','INSTRUCTOR_ACCEPTED'] else ('INVALID' if packet.lifecycle_state == 'AI_RESULT_INVALID' else 'NOT_VALIDATED') }}</dd></div><div><dt>Instructor edit</dt><dd>{{ packet.instructor_edit_status }}</dd></div><div><dt>Manual application</dt><dd>{{ 'RECORDED' if packet.applied_at else 'NOT_RECORDED' }}</dd></div><div><dt>Reinforced slide</dt><dd>{{ 'ATTACHED' if packet.attached_at else 'NOT_ATTACHED' }}</dd></div><div><dt>Final slide status</dt><dd>{{ packet.final_slide_status }}</dd></div></dl>
+        <details open><summary>Prepared packet</summary>
+          <textarea id="packet-{{ packet.packet_id }}" class="packet-text" readonly>{{ packet.packet_markdown }}</textarea>
+          <div class="packet-actions">
+            {% if packet.lifecycle_state == 'CORPUS_READY' %}<button type="button" class="copy-packet" data-copy-target="packet-{{ packet.packet_id }}" data-copy-packet="{{ packet.packet_id }}" data-action-url="/lectures/{{ lecture_route_id }}/reinforcement/action">Copy for ChatGPT</button>{% endif %}
+            <a class="button secondary-link" href="/lectures/{{ lecture_route_id }}/reinforcement/ai-update-packets/{{ packet.packet_id }}/download">Download Packet</a>
+            {% if packet.lifecycle_state == 'PACKET_COPIED' %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action"><input type="hidden" name="command" value="MARK_AI_PACKET_SENT"><input type="hidden" name="target_id" value="{{ packet.packet_id }}"><input type="hidden" name="return_stage" value="historical"><button>Mark as Sent</button></form>{% endif %}
+          </div>
+          <p id="copy-status-{{ packet.packet_id }}" class="copy-confirmation" aria-live="polite"></p>
+        </details>
+        {% if packet.lifecycle_state in ['SENT_TO_EXTERNAL_AI','AI_RESULT_INVALID','RETURNED_FOR_REVISION'] %}
+        <details open><summary>Paste AI Revision</summary>
+          <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="packet-result-form"><input type="hidden" name="command" value="PASTE_AI_UPDATE_RESULT"><input type="hidden" name="target_id" value="{{ packet.packet_id }}"><input type="hidden" name="return_stage" value="historical"><label>Paste AI-Assisted Revision<textarea name="structured_result" required></textarea></label><label class="check"><input type="checkbox" name="free_form_override" value="1"> Allow free-form paste for inspection only; it still cannot validate</label><button>Paste AI Revision</button></form>
+        </details>
+        {% endif %}
+        {% if packet.lifecycle_state == 'AI_RESULT_PASTED' %}
+        <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="packet-validate"><input type="hidden" name="command" value="VALIDATE_AI_UPDATE_RESULT"><input type="hidden" name="target_id" value="{{ packet.packet_id }}"><input type="hidden" name="return_stage" value="historical"><button>Validate Revision</button></form>
+        {% endif %}
+        {% if packet.lifecycle_state == 'AI_RESULT_INVALID' and revision.validation_errors_json %}<ul class="validation-errors">{% for item in revision.validation_errors_json %}<li>{{ item }}</li>{% endfor %}</ul>{% endif %}
+        {% if proposal %}
+        <button type="button" class="compare-toggle" data-compare-target="compare-{{ packet.packet_id }}">Compare Old and Proposed</button>
+        <div id="compare-{{ packet.packet_id }}" class="ai-slide-comparison" hidden>
+          <article><p class="eyebrow">Historical Slide</p>{% if slide.thumbnail_available %}<img class="comparison-thumbnail" src="/lectures/{{ lecture_route_id }}/reinforcement/historical/{{ slide.id }}/thumbnail" alt="Historical Slide 3">{% endif %}<h4>{{ slide.title }}</h4><pre>{{ slide.text }}</pre><p><b>Original references:</b> {{ slide.references|join('; ') or 'None visibly extracted' }}</p><p><b>Inherited warnings:</b> {{ slide.status }}</p></article>
+          <div class="relationship-mark" aria-hidden="true">↔</div>
+          <article><p class="eyebrow">AI-Assisted Proposed Revision</p><h4>{{ proposal.updated_slide_title }}</h4><blockquote>{{ proposal.central_proposition }}</blockquote><h5>Student-visible content</h5><pre>{{ proposal.student_visible_content }}</pre><details><summary>Notes, evidence, visuals and transitions</summary><p><b>Rationale:</b> {{ proposal.revision_rationale }}</p><p><b>Speaker notes:</b> {{ proposal.speaker_notes }}</p><p><b>Visual:</b> {{ proposal.visual_recommendation }}</p><p><b>Citations:</b> {{ proposal.source_citations|join('; ') }}</p><p><b>Requires verification:</b> {{ proposal.claims_requiring_verification|join('; ') or 'None listed' }}</p><p><b>Time:</b> {{ proposal.estimated_teaching_time }} · <b>Confidence:</b> {{ proposal.confidence }}</p></details><div class="change-highlights"><p><b>Retained</b> {{ packet.comparison.retained|join(', ') or 'None detected' }}</p><p><b>Added</b> {{ packet.comparison.added|join(', ') or 'None detected' }}</p><p><b>Removed</b> {{ packet.comparison.removed|join(', ') or 'None detected' }}</p><p><b>Moved to notes</b> {{ packet.comparison.moved_to_notes|join('; ') or 'None' }}</p><p><b>Requires verification</b> {{ packet.comparison.requires_verification|join('; ') or 'None' }}</p></div></article>
+        </div>
+        {% endif %}
+        {% if packet.lifecycle_state == 'AI_RESULT_VALIDATED' %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="packet-validate"><input type="hidden" name="command" value="OPEN_INSTRUCTOR_EDITING"><input type="hidden" name="target_id" value="{{ packet.packet_id }}"><input type="hidden" name="return_stage" value="historical"><button>Open Instructor Editing View</button></form>{% endif %}
+        {% if packet.lifecycle_state == 'INSTRUCTOR_EDITING' and packet.instructor_edit_status == 'IN_PROGRESS' %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="instructor-edit-form"><input type="hidden" name="command" value="SAVE_INSTRUCTOR_EDIT"><input type="hidden" name="target_id" value="{{ packet.packet_id }}"><input type="hidden" name="return_stage" value="historical"><h5>Instructor Editing View</h5><label>Title<input name="updated_slide_title" value="{{ proposal.updated_slide_title }}" required></label><label>Visible bullet text<textarea name="student_visible_content">{{ proposal.student_visible_content|join('\n') if proposal.student_visible_content is not string else proposal.student_visible_content }}</textarea></label><label>Speaker notes<textarea name="speaker_notes">{{ proposal.speaker_notes }}</textarea></label><label>Visual recommendation<textarea name="visual_recommendation">{{ proposal.visual_recommendation }}</textarea></label><label>Citations, one per line<textarea name="source_citations">{{ proposal.source_citations|join('\n') }}</textarea></label><label>Transition from previous slide<textarea name="relationship_to_previous_slide">{{ proposal.relationship_to_previous_slide }}</textarea></label><label>Transition to next slide<textarea name="relationship_to_next_slide">{{ proposal.relationship_to_next_slide }}</textarea></label><label>Unresolved claims, one per line<textarea name="claims_requiring_verification">{{ proposal.claims_requiring_verification|join('\n') }}</textarea></label><div class="ruling-buttons"><button>Save Instructor Edit</button></div></form><form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="waive-edit"><input type="hidden" name="command" value="WAIVE_INSTRUCTOR_EDIT"><input type="hidden" name="target_id" value="{{ packet.packet_id }}"><input type="hidden" name="return_stage" value="historical"><button class="secondary">Explicitly Waive Editing</button></form>{% endif %}
+        {% if packet.lifecycle_state == 'INSTRUCTOR_EDITING' and packet.instructor_edit_status in ['COMPLETED','EXPLICITLY_WAIVED'] %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="manual-application-form"><input type="hidden" name="command" value="MARK_MANUALLY_APPLIED"><input type="hidden" name="target_id" value="{{ packet.packet_id }}"><input type="hidden" name="return_stage" value="historical"><h5>Manual application record</h5><label>Application note<textarea name="application_note" required></textarea></label><label>Applied by<input name="applied_by" value="Instructor" required></label><label>Slide file or version reference<input name="slide_file_or_version_reference" placeholder="&lt;WORKING_LECTURE_DERIVATIVE&gt;/slide-003 or working-v0.4-copy" required></label><button>Mark as Manually Applied</button></form>{% endif %}
+        {% if packet.lifecycle_state == 'MANUALLY_APPLIED' %}<form method="post" enctype="multipart/form-data" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="attachment-form"><input type="hidden" name="command" value="ATTACH_REVISED_SLIDE"><input type="hidden" name="target_id" value="{{ packet.packet_id }}"><input type="hidden" name="return_stage" value="historical"><h5>Attach Revised Slide</h5><label>Upload PNG, JPEG, PDF or PPTX<input type="file" name="attachment" accept=".png,.jpg,.jpeg,.pdf,.pptx"></label><p class="foot">Or provide both a symbolic reference and its SHA-256 checksum.</p><label>Symbolic local reference<input name="reinforced_slide_reference" placeholder="&lt;WORKING_LECTURE_DERIVATIVE&gt;/slide-003.png"></label><label>SHA-256 checksum<input name="reinforced_slide_checksum" pattern="[A-Fa-f0-9]{64}"></label><button>Attach Revised Slide</button></form>{% endif %}
+        {% if packet.lifecycle_state == 'REINFORCED_SLIDE_ATTACHED' %}<p class="notice">Attached: {{ packet.reinforced_slide_reference }} · SHA-256 {{ packet.reinforced_slide_checksum }}</p>{% if packet.attachment_storage_path %}<a class="button secondary-link" href="/lectures/{{ lecture_route_id }}/reinforcement/ai-update-packets/{{ packet.packet_id }}/attachment">Review attached derivative</a>{% endif %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="accept-slide-form"><input type="hidden" name="command" value="ACCEPT_REINFORCED_SLIDE"><input type="hidden" name="target_id" value="{{ packet.packet_id }}"><input type="hidden" name="return_stage" value="historical"><label>Unresolved required claims<select name="unresolved_claims_disposition"><option value="">Choose a ruling</option><option>RESOLVED</option><option>EXPLICITLY_DEFERRED</option></select></label><button>Accept Reinforced Slide</button></form>{% endif %}
+        {% if packet.lifecycle_state in ['AI_RESULT_VALIDATED','INSTRUCTOR_EDITING','MANUALLY_APPLIED','REINFORCED_SLIDE_ATTACHED'] %}<details class="return-revision"><summary>Return for Revision</summary><form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action"><input type="hidden" name="command" value="RETURN_AI_UPDATE_FOR_REVISION"><input type="hidden" name="target_id" value="{{ packet.packet_id }}"><input type="hidden" name="return_stage" value="historical"><label>Return target<select name="return_target">{% for target in ['SOURCE_CORPUS','AI_PROPOSAL','INSTRUCTOR_EDIT','VISUAL','CITATION','SLIDE_SEQUENCE'] %}<option>{{ target }}</option>{% endfor %}</select></label><label>Return reason<textarea name="return_reason" required></textarea></label><button class="secondary">Return for Revision</button></form></details>{% endif %}
+        {% if packet.lifecycle_state == 'INSTRUCTOR_ACCEPTED' %}<p class="notice"><b>INSTRUCTOR_ACCEPTED_REINFORCED_SLIDE</b> · local Slide 3 workflow acceptance only. The historical slide and lecture versions remain unchanged.</p>{% endif %}
+      </section>
+      {% endif %}
+    </div>
+  </article>
+{% endfor %}
+</section>
+
+{% elif stage == 'clusters' %}
+<section class="stage-heading"><div><p class="eyebrow">Stage 2</p><h2>Select knowledge cluster</h2></div></section>
+<section class="cluster-grid">
+{% for item in clusters %}<article class="panel cluster-card {{ 'locked-cluster' if not item.active }}"><small>{{ item.cluster_id }} · slides {{ item.slide_start }}–{{ item.slide_end }}</small><h3>{{ item.title }}</h3><p>{{ item.thematic_function }}</p><div class="status-row"><span>{{ item.status }}</span><span>{{ 'ACTIVE PILOT' if item.active else 'NOT_STARTED · LOCKED' }}</span></div>
+  {% if item.active %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action"><input type="hidden" name="command" value="SELECT_CLUSTER"><input type="hidden" name="target_id" value="{{ item.cluster_id }}"><input type="hidden" name="return_stage" value="clusters"><button>Select KC01</button></form>{% endif %}
+</article>{% endfor %}
+</section>
+
+{% elif stage == 'resources' %}
+<section class="stage-heading"><div><p class="eyebrow">Stage 3</p><h2>Aligned resources · LEC_RES_1 only</h2></div>
+{% if not resources %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action"><input type="hidden" name="command" value="FIND_RESOURCES"><input type="hidden" name="return_stage" value="resources"><button>Find aligned resources</button></form>{% endif %}</section>
+{% if resources %}<section class="stack">{% for resource in resources %}<article class="panel resource-profile"><div><small>{{ resource.source_identifier }} · {{ resource.resource_type }}</small><h3>{{ resource.title }}</h3><p>{{ resource.recommended_use }}</p><div class="status-row"><span>{{ resource.current_use_level }}</span><span>{{ resource.source_quality }}</span><span>{{ resource.currency_status }}</span><span>{{ resource.verification_status }}</span></div>
+<details><summary>Profile and symbolic source detail</summary><dl class="profile-grid"><div><dt>Author</dt><dd>{{ resource.author or 'Not recorded' }}</dd></div><div><dt>Year</dt><dd>{{ resource.publication_year or 'Not recorded' }}</dd></div><div><dt>Alignment</dt><dd>{{ resource.cluster_alignment }}</dd></div><div><dt>Historical slides</dt><dd>{{ resource.matching_historical_slides|join(', ') or 'None yet' }}</dd></div><div><dt>Subjects</dt><dd>{{ resource.main_subjects|join(', ') or 'Unresolved' }}</dd></div><div><dt>Maps/figures</dt><dd>{{ resource.maps_or_figures }}</dd></div><div><dt>Location</dt><dd><code>{{ resource.symbolic_location }}</code></dd></div></dl></details></div>
+<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="decision-form"><input type="hidden" name="command" value="RESOURCE_ACTION"><input type="hidden" name="target_id" value="{{ resource.alignment_id }}"><input type="hidden" name="return_stage" value="resources"><label>Action<select name="value">{% for action in ['OPEN','MARK_AS_USED','MARK_AS_UNDERUSED','MARK_AS_UNUSED_BUT_RELEVANT','MARK_AS_OUT_OF_DOMAIN','REQUEST_DEEPER_ANALYSIS','DEFER'] %}<option>{{ action }}</option>{% endfor %}</select></label><label>Comment<input name="comment" value="{{ resource.instructor_comment }}"></label><button>Record</button></form>
+</article>{% endfor %}</section>{% else %}<p class="empty">Resource profiles have not been exposed. The workflow will inspect only LEC_RES_1.</p>{% endif %}
+
+{% elif stage == 'units' %}
+<section class="stage-heading"><div><p class="eyebrow">Stage 4</p><h2>Traceable knowledge units</h2></div>{% if not units %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action"><input type="hidden" name="command" value="EXTRACT_UNITS"><input type="hidden" name="return_stage" value="units"><button>Extract knowledge units</button></form>{% endif %}</section>
+{% if units %}<section class="unit-grid">{% for unit in units %}<article class="panel unit-card"><small>{{ unit.knowledge_unit_id }} · {{ unit.unit_type }}</small><h3>{{ unit.candidate_slide_role }}</h3><p>{{ unit.unit_text }}</p><details><summary>Provenance</summary><p><b>Source:</b> {{ unit.source_identifier }} · {{ unit.source_pages }}</p><p><b>Historical lineage:</b> {{ unit.historical_slide_ids|join(', ') }}</p><p><b>Verification:</b> {{ unit.verification_status }}</p></details><form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="decision-form"><input type="hidden" name="command" value="UNIT_ACTION"><input type="hidden" name="target_id" value="{{ unit.knowledge_unit_id }}"><input type="hidden" name="return_stage" value="units"><select name="value">{% for action in ['ADD_TO_CLUSTER','ADD_TO_SLIDE','ADD_TO_NOTES','ADD_TO_READING','MARK_FOR_VERIFICATION','IGNORE'] %}<option>{{ action }}</option>{% endfor %}</select><button>Record</button></form><span class="pill">{{ unit.instructor_status }}</span></article>{% endfor %}</section>{% else %}<p class="empty">No knowledge units extracted. Whole-document summaries are not used.</p>{% endif %}
+
+{% elif stage == 'patterns' %}
+<section class="stage-heading"><div><p class="eyebrow">Stage 5</p><h2>Generate alternative knowledge patterns</h2></div></section>
+<div class="rotation-buttons" aria-label="Analytical rotations">{% for rotation in ['THEMATIC','TEMPORAL','SPATIAL','RELATIONAL','EVIDENTIARY','PEDAGOGICAL'] %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action"><input type="hidden" name="command" value="SELECT_ROTATION"><input type="hidden" name="value" value="{{ rotation }}"><input type="hidden" name="return_stage" value="patterns"><button class="{{ 'selected' if cluster.selected_rotation == rotation }}">{{ rotation }}</button></form>{% endfor %}</div>
+{% if units and not patterns %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="panel primary-action"><input type="hidden" name="command" value="GENERATE_PATTERNS"><input type="hidden" name="return_stage" value="patterns"><button>Generate three candidate patterns</button><p>Generated structures remain provisional and require instructor selection.</p></form>{% endif %}
+<section class="pattern-grid">{% for pattern in patterns %}<article class="panel pattern-card"><small>{{ pattern.pattern_id }} · {{ pattern.status }}</small><h3>{{ pattern.title }}</h3><blockquote>{{ pattern.central_proposition }}</blockquote><ol>{% for step in pattern.sequence_json %}<li>{{ step }}</li>{% endfor %}</ol><div class="status-row"><span>{{ pattern.analytical_lenses|join(' · ') }}</span><span>{{ pattern.evidence_strength }}</span><span>{{ pattern.estimated_time }} min</span></div><details><summary>Lineage, evidence and limitations</summary><p><b>Retained:</b> {{ pattern.historical_slides_retained|join(', ') }}</p><p><b>Condensed:</b> {{ pattern.historical_slides_condensed|join(', ') }}</p><p><b>Removed:</b> {{ pattern.historical_slides_removed|join(', ') or 'None' }}</p><p><b>Source basis:</b> {{ pattern.source_basis|join(', ') or 'Profile review pending' }}</p><ul>{% for risk in pattern.risks_or_limitations %}<li>{{ risk }}</li>{% endfor %}</ul></details>
+<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="decision-form"><input type="hidden" name="command" value="PATTERN_ACTION"><input type="hidden" name="target_id" value="{{ pattern.pattern_id }}"><input type="hidden" name="return_stage" value="patterns"><label>Action<select name="value">{% for action in ['SELECT','REVISE','REJECT','SAVE_FOR_LATER'] %}<option>{{ action }}</option>{% endfor %}</select></label><label>Comment<input name="comment"></label><button>Record</button></form>
+<details><summary>Combine or edit</summary><form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="decision-form"><input type="hidden" name="command" value="PATTERN_ACTION"><input type="hidden" name="target_id" value="{{ pattern.pattern_id }}"><input type="hidden" name="return_stage" value="patterns"><select name="value"><option>COMBINE</option><option>EDIT_PROPOSITION</option><option>CHANGE_SEQUENCE</option></select><select name="other_pattern_id"><option value="">Choose second pattern</option>{% for other in patterns if other.pattern_id != pattern.pattern_id %}<option>{{ other.pattern_id }}</option>{% endfor %}</select><textarea name="edit_value" placeholder="Replacement proposition, combined proposition, or JSON sequence"></textarea><button>Prepare revision</button></form></details>
+</article>{% endfor %}</section>
+<details class="panel import-export"><summary>Structured offline analysis exchange</summary><p>No AI runs in the cockpit. Export a prompt, run it separately if desired, then paste JSON for validation.</p><a class="button" href="/lectures/{{ lecture_route_id }}/reinforcement/export-prompt">Export analysis prompt</a><form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/import"><label>Structured JSON result<textarea name="structured_result" required></textarea></label><button>Validate and import as AI-assisted draft</button></form></details>
+
+{% elif stage == 'choice' %}
+<section class="stage-heading"><div><p class="eyebrow">Stage 6</p><h2>Choose pattern</h2></div></section>
+{% set selected = namespace(item=None) %}{% for pattern in patterns if pattern.pattern_id == cluster.selected_pattern_id %}{% set selected.item = pattern %}{% endfor %}
+{% if selected.item %}<article class="panel owner-pattern"><small>{{ selected.item.pattern_id }} · {{ selected.item.status }}</small><h2>{{ selected.item.title }}</h2><blockquote>{{ selected.item.central_proposition }}</blockquote><dl class="profile-grid"><div><dt>Historical slides retained</dt><dd>{{ selected.item.historical_slides_retained|join(', ') }}</dd></div><div><dt>Historical slides merged</dt><dd>{{ selected.item.historical_slides_condensed|join(', ') }}</dd></div><div><dt>Historical slides removed</dt><dd>{{ selected.item.historical_slides_removed|join(', ') or 'None' }}</dd></div><div><dt>Resources added</dt><dd>{{ selected.item.source_basis|join(', ') or 'Pending' }}</dd></div><div><dt>New relationships</dt><dd>{{ selected.item.sequence_json|join(' → ') }}</dd></div><div><dt>Unresolved claims</dt><dd>{{ acceptance_summary.unresolved_claims }}</dd></div><div><dt>Estimated teaching time</dt><dd>{{ selected.item.estimated_time }} minutes</dd></div></dl>
+<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="decision-form"><input type="hidden" name="command" value="PATTERN_ACTION"><input type="hidden" name="target_id" value="{{ selected.item.pattern_id }}"><input type="hidden" name="value" value="CONFIRM_PATTERN"><input type="hidden" name="return_stage" value="choice"><label>Instructor note<input name="comment"></label><button>Confirm pattern</button></form><a class="button secondary-link" href="?stage=patterns">Return to patterns</a></article>{% else %}<p class="empty">Select a candidate pattern first. Selection does not confirm it.</p>{% endif %}
+
+{% elif stage == 'slides' %}
+<section class="stage-heading"><div><p class="eyebrow">Stage 7</p><h2>Historical ↔ reinforced slides</h2></div>{% if not reinforced_slides %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action"><input type="hidden" name="command" value="GENERATE_SLIDES"><input type="hidden" name="return_stage" value="slides"><button>Generate reinforced sequence</button></form>{% endif %}</section>
+{% if reinforced_slides %}<section class="stack">{% for slide in reinforced_slides %}<article class="panel comparison-card"><div class="historical-side"><p class="eyebrow">Historical lineage</p>{% for old in slide.historical %}<div class="mini-historical"><b>Slide {{ old.number }}</b><span>{{ old.title }}</span></div>{% endfor %}</div><div class="relationship-mark" aria-hidden="true">↔</div><div class="reinforced-side"><small>{{ slide.reinforced_slide_id }} · {{ slide.status }}</small><h3>{{ slide.title }}</h3><blockquote>{{ slide.central_proposition }}</blockquote><p><b>Visual:</b> {{ slide.visual_recommendation }}</p><details><summary>Speaker cue, evidence and transitions</summary><p>{{ slide.speaker_cue }}</p><p><b>Units:</b> {{ slide.knowledge_units|join(', ') }}</p><p><b>Resources:</b> {{ slide.resource_support|join(', ') }}</p><p><b>In:</b> {{ slide.transition_in }}</p><p><b>Out:</b> {{ slide.transition_out }}</p><p class="foot">{{ slide.citation_footer }}</p></details><form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="decision-form"><input type="hidden" name="command" value="SLIDE_ACTION"><input type="hidden" name="target_id" value="{{ slide.reinforced_slide_id }}"><input type="hidden" name="return_stage" value="slides"><select name="value">{% for action in ['ACCEPT','REVISE','MERGE','SPLIT','MOVE','DELETE','MOVE_DETAIL_TO_NOTES','REQUEST_NEW_VISUAL','RETURN_TO_PATTERN'] %}<option>{{ action }}</option>{% endfor %}</select><input name="comment" placeholder="Teaching or revision comment"><button>Record</button></form></div></article>{% endfor %}</section>{% else %}<p class="empty">Confirm a pattern before generating reinforced slides.</p>{% endif %}
+
+{% elif stage == 'rehearsal' %}
+<section class="stage-heading"><div><p class="eyebrow">Stage 8</p><h2>Classroom rehearsal</h2></div><div id="rehearsal-timer" class="rehearsal-timer" aria-live="polite">00:00</div></section>
+{% if not rehearsal %}<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="panel primary-action"><input type="hidden" name="command" value="START_REHEARSAL"><input type="hidden" name="return_stage" value="rehearsal"><button>Start rehearsal</button></form>{% else %}<p class="notice">{{ rehearsal.rehearsal_id }} · {{ rehearsal.status }} · actual {{ rehearsal.actual_seconds }} seconds · target {{ rehearsal.target_seconds }} seconds</p>
+<section class="rehearsal-deck">{% for slide in reinforced_slides %}<article class="panel rehearsal-slide"><small>Slide {{ loop.index }} · {{ slide.estimated_time }} sec</small><h2>{{ slide.title }}</h2><p class="student-proposition">{{ slide.central_proposition }}</p><details><summary>Show notes and evidence</summary><p><b>Purpose:</b> {{ slide.speaker_cue }}</p><p><b>Evidence:</b> {{ slide.resource_support|join(', ') }}</p><p><b>Transition:</b> {{ slide.transition_out }}</p><p><b>Warning:</b> {{ slide.verification_status }}</p></details><form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="rehearsal-control"><input type="hidden" name="command" value="REHEARSAL_EVENT"><input type="hidden" name="rehearsal_id" value="{{ rehearsal.rehearsal_id }}"><input type="hidden" name="target_id" value="{{ slide.reinforced_slide_id }}"><input type="hidden" name="return_stage" value="rehearsal"><input type="hidden" class="elapsed-input" name="elapsed_seconds" value="0"><select name="value"><option>PREVIOUS</option><option>NEXT</option><option>PAUSE</option><option>RESUME</option><option>SHOW_NOTES</option><option>HIDE_NOTES</option><option>SHOW_EVIDENCE</option><option>MARK_KEEP</option><option>MARK_REVISE</option><option>MARK_REMOVE</option><option>ADD_TEACHING_COMMENT</option></select><input name="comment" placeholder="Teaching comment"><button>Record</button></form></article>{% endfor %}</section>
+<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="panel rehearsal-end"><input type="hidden" name="command" value="REHEARSAL_EVENT"><input type="hidden" name="rehearsal_id" value="{{ rehearsal.rehearsal_id }}"><input type="hidden" name="value" value="END_REHEARSAL"><input type="hidden" name="return_stage" value="acceptance"><input type="hidden" class="elapsed-input" name="elapsed_seconds" value="0"><label>Final rehearsal comment<textarea name="comment"></textarea></label><button>End rehearsal</button></form>{% endif %}
+
+{% elif stage == 'acceptance' %}
+<section class="stage-heading"><div><p class="eyebrow">Stage 9</p><h2>Cluster acceptance gate</h2></div><span class="pill">Local decision only</span></section>
+<section class="panel"><dl class="profile-grid"><div><dt>Slides retained</dt><dd>{{ acceptance_summary.slides_retained }}</dd></div><div><dt>Slides requiring revision</dt><dd>{{ acceptance_summary.slides_requiring_revision }}</dd></div><div><dt>Slides removed</dt><dd>{{ acceptance_summary.slides_removed }}</dd></div><div><dt>Estimated time</dt><dd>{{ acceptance_summary.estimated_seconds }} seconds</dd></div><div><dt>Actual rehearsal time</dt><dd>{{ acceptance_summary.actual_rehearsal_seconds }} seconds</dd></div><div><dt>Evidence gaps</dt><dd>{{ acceptance_summary.evidence_gaps }}</dd></div><div><dt>Visual problems</dt><dd>{{ acceptance_summary.visual_problems }}</dd></div><div><dt>Sequence problems</dt><dd>{{ acceptance_summary.sequence_problems }}</dd></div><div><dt>Unresolved claims</dt><dd>{{ acceptance_summary.unresolved_claims }}</dd></div></dl>
+<form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/action" class="decision-form acceptance-form"><input type="hidden" name="command" value="ACCEPTANCE_ACTION"><input type="hidden" name="return_stage" value="acceptance"><label>Ruling<select name="value"><option>ACCEPT_CLUSTER</option><option>RETURN_TO_SLIDES</option><option>RETURN_TO_SOURCES</option><option>RETURN_TO_PATTERNS</option><option>DEFER</option></select></label><label>Instructor ruling note<textarea name="comment"></textarea></label><button>Record explicit ruling</button></form></section>
+
+{% elif stage == 'build' %}
+<section class="panel build-lock"><p class="eyebrow">Stage 10</p><h2>Build v0.5: LOCKED</h2><p>Accepted clusters: {{ counts.accepted_clusters }} of 6.</p><p>This pilot provides readiness only. It cannot generate or overwrite a lecture version.</p><button disabled>Build Next Lecture Version</button></section>
+{% endif %}
+
+<script>
+(() => {
+  const display = document.getElementById('rehearsal-timer');
+  if (display) {
+    let seconds = 0;
+    window.setInterval(() => {
+      seconds += 1;
+      const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const remainder = String(seconds % 60).padStart(2, '0');
+      display.textContent = `${minutes}:${remainder}`;
+      document.querySelectorAll('.elapsed-input').forEach(input => input.value = seconds);
+    }, 1000);
+  }
+  document.querySelectorAll('.copy-packet').forEach(button => button.addEventListener('click', async () => {
+    const source = document.getElementById(button.dataset.copyTarget);
+    try {
+      await navigator.clipboard.writeText(source.value);
+      const body = new URLSearchParams({command: 'MARK_AI_PACKET_COPIED', target_id: button.dataset.copyPacket, return_stage: 'historical'});
+      const response = await fetch(button.dataset.actionUrl, {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body});
+      if (!response.ok) throw new Error('copy state could not be recorded');
+      document.getElementById(`copy-status-${button.dataset.copyPacket}`).textContent = 'Packet copied successfully';
+      button.textContent = 'Packet Copied';
+      window.setTimeout(() => window.location.reload(), 900);
+    } catch (_error) {
+      source.focus(); source.select();
+      button.textContent = 'Select All — Copy Manually';
+    }
+  }));
+  document.querySelectorAll('.compare-toggle').forEach(button => button.addEventListener('click', () => {
+    const comparison = document.getElementById(button.dataset.compareTarget);
+    comparison.hidden = !comparison.hidden;
+    button.textContent = comparison.hidden ? 'Compare Old vs Proposed' : 'Hide Comparison';
+  }));
+})();
+</script>
+{% endblock %}

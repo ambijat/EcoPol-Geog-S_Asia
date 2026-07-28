@@ -1,0 +1,16 @@
+# Historical title candidates for instructor review. Format: ID|Title
+L01|South Asia as a Region
+L02|Economic and Social Indicators of South Asia
+L03|Agriculture and Food Security in South Asia
+L04|Wheat and Rice Cultivation in South Asia
+L05|Commercial Crops in South Asia
+L06|Commercial Crops in South Asia
+L07|Forest Resources of Bhutan and Nepal
+L08|Industrial Location and Growth in South Asia
+L09|Water Resources of Bhutan and Nepal
+L10|State-building and Federalism in South Asia
+L11|Borders and Conflict in South Asia
+L12|Transnational Boundary River Water Sharing
+L13|Regional Security of South Asia
+L14|Regional Economic Cooperation in South Asia
+L15|Energy Geoeconomics in South Asia

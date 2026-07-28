@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c2f36">
+  <meta name="description" content="IS529N Semester 2026 course production cockpit">
+  <title>{% block title %}IS529N Cockpit{% endblock %} · Economic and Political Geography of South Asia</title>
+  <link rel="icon" href="{{ url_for('static', path='/images/cockpit-mark.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='/title_evidence.css') }}">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="mobile-bar">
+    <a class="mobile-brand" href="/" aria-label="IS529N dashboard">
+      <img src="{{ url_for('static', path='/images/cockpit-mark.svg') }}" alt="">
+      <span><strong>IS529N</strong><small>Course cockpit</small></span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-sidebar">
+      <span></span><span></span><span></span><b>Menu</b>
+    </button>
+  </div>
+  <div class="nav-scrim" aria-hidden="true"></div>
+  <aside id="primary-sidebar">
+    <a class="brand" href="/">
+      <span>IS529N · Semester 2026</span>
+      <strong>Economic and Political Geography of South Asia</strong>
+      <small>Paired Lecture Production Cockpit</small>
+    </a>
+    <nav aria-label="Primary navigation">
+      <p>Semester</p>
+      <a class="{{ 'active' if section == 'dashboard' }}" href="/" {% if section == 'dashboard' %}aria-current="page"{% endif %}><i>01</i><span>Dashboard</span></a>
+      <a class="{{ 'active' if section == 'titles' }}" href="/titles" {% if section == 'titles' %}aria-current="page"{% endif %}><i>02</i><span>Lecture titles</span></a>
+      <p>Lecture 1 workflow</p>
+      <a class="{{ 'active' if section == 'workspace' }}" href="/lectures/1" {% if section == 'workspace' %}aria-current="page"{% endif %}><i>03</i><span>Pair workspace</span></a>
+      <a class="{{ 'active' if section == 'resources' }}" href="/lectures/1/resources" {% if section == 'resources' %}aria-current="page"{% endif %}><i>04</i><span>Resource clusters</span></a>
+      <a class="{{ 'active' if section == 'decks' }}" href="/lectures/1/decks" {% if section == 'decks' %}aria-current="page"{% endif %}><i>05</i><span>Historical decks</span></a>
+      <a class="{{ 'active' if section == 'notes' }}" href="/lectures/1/notes" {% if section == 'notes' %}aria-current="page"{% endif %}><i>06</i><span>Revised notes</span></a>
+      <a class="{{ 'active' if section == 'slide_plan' }}" href="/lectures/1/slide-plan" {% if section == 'slide_plan' %}aria-current="page"{% endif %}><i>07</i><span>Slide revision</span></a>
+      <a class="{{ 'active' if section == 'reinforcement' }}" href="/lectures/IS529N-L01-A/reinforcement" {% if section == 'reinforcement' %}aria-current="page"{% endif %}><i>08</i><span>Reinforcement</span></a>
+      <a class="{{ 'active' if section == 'deliverables' }}" href="/lectures/1/deliverables" {% if section == 'deliverables' %}aria-current="page"{% endif %}><i>09</i><span>Deliverables</span></a>
+      <a class="{{ 'active' if section == 'class_record' }}" href="/lectures/1/class-record" {% if section == 'class_record' %}aria-current="page"{% endif %}><i>10</i><span>Class record</span></a>
+      <a class="{{ 'active' if section == 'governance' }}" href="/governance?lecture=1" {% if section == 'governance' %}aria-current="page"{% endif %}><i>11</i><span>Governance & Git</span></a>
+    </nav>
+    <div class="boundary"><span class="status-dot"></span><div><strong>Local workspace</strong><small>No AI calls, commits, or ledger appends</small></div></div>
+  </aside>
+  <main id="main-content" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+  <script src="{{ url_for('static', path='/app.js') }}" defer></script>
+</body>
+</html>

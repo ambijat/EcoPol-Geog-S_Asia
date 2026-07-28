@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block title %}Lean Lecture Revision{% endblock %}
+{% block content %}
+<header class="reinforcement-header lean-header">
+  <div>
+    <p class="eyebrow">Lecture 1A · KC01 · default workspace</p>
+    <h1>Lean Lecture Revision</h1>
+    <p>Historical slide or small sequence → instructor query → sources → AI revision → instructor review → accepted content.</p>
+  </div>
+  <a class="button secondary-link" href="?view=legacy&stage=historical">Open legacy governed workflow</a>
+</header>
+
+{% if message %}<p class="notice" role="status">{{ message }}</p>{% endif %}
+{% if error %}<p class="notice error" role="alert">{{ error }}</p>{% endif %}
+
+<nav class="lean-steps" aria-label="Lean revision steps">
+  {% for number,label in [('1','Select'),('2','Query'),('3','Sources'),('4','Packet'),('5','Copy / Download'),('6','Paste'),('7','Compare'),('8','Edit'),('9','Accept')] %}
+  <span><b>{{ number }}</b>{{ label }}</span>
+  {% endfor %}
+</nav>
+
+<section class="panel lean-start">
+  <div class="stage-heading"><div><p class="eyebrow">Steps 1–3</p><h2>Start a revision unit</h2></div><span class="pill">Slides 3–4 are the acceptance fixture</span></div>
+  <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/lean/action" class="lean-start-form">
+    <input type="hidden" name="command" value="SAVE_LEAN_DRAFT">
+    <label>Unit type
+      <select name="unit_type" id="lean-unit-type">
+        <option value="SINGLE_SLIDE">Single slide</option>
+        <option value="SLIDE_PAIR">Slide pair</option>
+        <option value="SMALL_CLUSTER">Small cluster (2–4)</option>
+      </select>
+    </label>
+    <fieldset class="lean-slide-picker"><legend>Select consecutive historical slides</legend>
+      {% for slide in slides %}
+      <label><input type="checkbox" name="slide_ids" value="{{ slide.historical_slide_id }}"{% if slide.historical_slide_number == 3 %} checked{% endif %}> {{ slide.historical_slide_number }} · {{ slide.title }}</label>
+      {% endfor %}
+    </fieldset>
+    <label class="wide">Instructor query
+      <textarea name="instructor_query" required placeholder="What should this slide or sequence explain, change, qualify or move to notes?"></textarea>
+    </label>
+    <label>Source mode
+      <select name="source_mode" id="lean-source-mode">
+        <option value="REPOSITORY">Existing repository sources</option>
+        <option value="DIRECT_LOCAL">Direct local paths</option>
+        <option value="MIXED">Repository + direct local</option>
+        <option value="GOVERNED">Governed source review</option>
+      </select>
+    </label>
+    <details class="wide" open><summary>Repository sources</summary>
+      <div class="lean-source-list">
+      {% for source in sources %}
+        <label class="lean-source-option"><input type="checkbox" name="selected_source_ids" value="{{ source.source_identifier }}"{% if source.source_identifier.startswith('IS529N-ALI-') or source.source_identifier.startswith('IS529N-VALDIYA-') %} checked{% endif %}>
+          <span><b>{{ source.source_identifier }}</b> · {{ source.title }}<small>{{ source.relevant_pages_or_sections }} · {{ source.verification_status }}</small></span>
+        </label>
+      {% endfor %}
+      </div>
+    </details>
+    <label class="wide">Direct local sources <span class="foot">One per line: absolute path | page reference | optional excerpt. These remain unregistered local inputs.</span>
+      <textarea name="direct_sources" placeholder="/absolute/path/source.pdf | PDF p. 12 | Relevant passage or transcription"></textarea>
+    </label>
+    <button class="primary-wide">Save Revision Draft</button>
+  </form>
+</section>
+
+{% if current %}
+<section class="panel lean-current" aria-labelledby="current-revision">
+  <div class="packet-heading">
+    <div><p class="eyebrow">Active revision unit</p><h2 id="current-revision">{{ current.unit_id }} · {{ current.unit_type|replace('_',' ')|title }}</h2></div>
+    <div class="status-row"><span>{{ current.status }}</span><span>{{ current.artefact_status }}</span></div>
+  </div>
+  <p><b>Slides:</b> {{ current.slide_ids_json|join(' → ') }}</p>
+  <p><b>Instructor query:</b> {{ current.instructor_query }}</p>
+  <details><summary>Details</summary><dl class="profile-grid"><div><dt>Source mode</dt><dd>{{ current.source_mode }}</dd></div><div><dt>Repository sources</dt><dd>{{ current.selected_sources_json|join(', ') or 'None' }}</dd></div><div><dt>Created</dt><dd>{{ current.created_at }}</dd></div><div><dt>Updated</dt><dd>{{ current.updated_at }}</dd></div></dl></details>
+
+  {% if current.status in ['DRAFT','RETURNED'] %}
+  <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/lean/action" class="lean-primary-actions">
+    <input type="hidden" name="command" value="PREPARE_LEAN_PACKET"><input type="hidden" name="target_id" value="{{ current.unit_id }}">
+    <button>Prepare AI Packet</button>
+  </form>
+  {% endif %}
+
+  {% if current.packet_markdown %}
+  <details open><summary>Compact AI packet</summary>
+    <textarea id="lean-packet-{{ current.unit_id }}" class="packet-text" readonly>{{ current.packet_markdown }}</textarea>
+    <div class="lean-primary-actions">
+      <button type="button" class="lean-copy" data-copy-target="lean-packet-{{ current.unit_id }}">Copy AI Packet</button>
+      <a class="button secondary-link" href="/lectures/{{ lecture_route_id }}/reinforcement/lean/{{ current.unit_id }}/download">Download AI Packet</a>
+      <span class="copy-confirmation" aria-live="polite"></span>
+    </div>
+  </details>
+  {% endif %}
+
+  {% if current.status in ['AI_PREPARED','RETURNED'] %}
+  <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/lean/action" class="packet-result-form">
+    <input type="hidden" name="command" value="PASTE_VALIDATE_LEAN_RESULT"><input type="hidden" name="target_id" value="{{ current.unit_id }}">
+    <label>Paste AI revision (YAML or JSON)<textarea name="structured_result" required>{{ current.raw_result_text }}</textarea></label>
+    <button>Paste and Validate</button>
+  </form>
+  {% endif %}
+  {% if current.validation_errors_json %}<ul class="validation-errors">{% for item in current.validation_errors_json %}<li>{{ item }}</li>{% endfor %}</ul>{% endif %}
+  {% if current.validation_warnings_json %}<ul class="notice">{% for item in current.validation_warnings_json %}<li>{{ item }}</li>{% endfor %}</ul>{% endif %}
+
+  {% if current.proposal %}
+  <section class="lean-comparison">
+    <div class="stage-heading"><div><p class="eyebrow">Steps 7–8</p><h3>Compare old and proposed</h3></div></div>
+    {% for slide_id in current.slide_ids_json %}
+      {% set originals = slides|selectattr('historical_slide_id','equalto',slide_id)|list %}
+      {% set proposals = current.proposal.slides|selectattr('slide_id','equalto',slide_id)|list %}
+      {% if originals and proposals %}
+      {% set original = originals[0] %}{% set proposal = proposals[0] %}
+      <div class="lean-compare-row">
+        <article><p class="eyebrow">Historical · read-only</p><h4>{{ original.title }}</h4><div class="scroll-pane">{{ original.text_extract }}</div></article>
+        <article><p class="eyebrow">Proposed · {{ slide_id }}</p><h4>{{ proposal.title }}</h4><h5>Student-visible text</h5><ul>{% for item in proposal.student_visible_content %}<li>{{ item }}</li>{% endfor %}</ul><details><summary>Speaker notes and technical details</summary><p>{{ proposal.speaker_notes }}</p><p><b>Visual:</b> {{ proposal.visual_recommendation }}</p><p><b>From previous:</b> {{ proposal.transition_from_previous }}</p><p><b>To next:</b> {{ proposal.transition_to_next }}</p></details></article>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </section>
+
+  {% if current.status in ['AI_VALIDATED','INSTRUCTOR_REVIEWED','RETURNED'] %}
+  <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/lean/action" class="lean-edit-form">
+    <input type="hidden" name="command" value="SAVE_LEAN_INSTRUCTOR_EDIT"><input type="hidden" name="target_id" value="{{ current.unit_id }}">
+    <h3>Instructor edit</h3>
+    {% for proposal in current.proposal.slides %}
+      {% set number = proposal.slide_id.rsplit('S',1)[-1]|int %}
+      <fieldset><legend>{{ proposal.slide_id }}</legend>
+        <label>Title<input name="title_{{ number }}" value="{{ proposal.title }}" required></label>
+        <label>Student-visible text, one item per line<textarea name="visible_{{ number }}" required>{{ proposal.student_visible_content|join('\n') }}</textarea></label>
+        <label>Speaker notes<textarea name="notes_{{ number }}" required>{{ proposal.speaker_notes }}</textarea></label>
+        <label>Visual recommendation<textarea name="visual_{{ number }}">{{ proposal.visual_recommendation }}</textarea></label>
+        <label>Transition from previous<input name="from_{{ number }}" value="{{ proposal.transition_from_previous }}"></label>
+        <label>Transition to next<input name="to_{{ number }}" value="{{ proposal.transition_to_next }}"></label>
+      </fieldset>
+    {% endfor %}
+    <button>Save Instructor Edit</button>
+  </form>
+  {% endif %}
+
+  {% if current.status in ['AI_VALIDATED','INSTRUCTOR_REVIEWED'] %}
+  <div class="lean-rulings">
+    <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/lean/action">
+      <input type="hidden" name="command" value="ACCEPT_LEAN_CONTENT"><input type="hidden" name="target_id" value="{{ current.unit_id }}">
+      <label>Accepted by<input name="accepted_by" value="Instructor"></label><button>Accept Content</button>
+    </form>
+    <form method="post" action="/lectures/{{ lecture_route_id }}/reinforcement/lean/action">
+      <input type="hidden" name="command" value="RETURN_LEAN_REVISION"><input type="hidden" name="target_id" value="{{ current.unit_id }}">
+      <label>Return note<input name="return_note" required></label><button class="secondary">Return Revision</button>
+    </form>
+  </div>
+  {% endif %}
+  {% endif %}
+
+  {% if current.status == 'CONTENT_ACCEPTED' %}
+  <section class="notice"><h3>Content accepted</h3><p>The intellectual revision is accepted. No physical slide file is required.</p><details><summary>Minimal provenance record</summary><pre>{{ current.accepted_record_json }}</pre></details></section>
+  <form method="post" enctype="multipart/form-data" action="/lectures/{{ lecture_route_id }}/reinforcement/lean/action" class="lean-artefact-form">
+    <input type="hidden" name="command" value="ATTACH_LEAN_ARTEFACT"><input type="hidden" name="target_id" value="{{ current.unit_id }}">
+    <h3>Attach an artefact later <span class="foot">Optional</span></h3>
+    <label>PNG, JPEG, PDF, PPTX or ODP<input type="file" name="attachment" accept=".png,.jpg,.jpeg,.pdf,.pptx,.odp"></label>
+    <label>Or local/reference label<input name="reference" placeholder="Working slide file or reference"></label>
+    <button class="secondary">Attach Artefact</button>
+  </form>
+  {% if current.artefacts %}<ul>{% for item in current.artefacts %}<li>{{ item.artefact_id }} · {{ item.reference }} · ARTEFACT_ATTACHED</li>{% endfor %}</ul>{% endif %}
+  {% endif %}
+</section>
+{% endif %}
+
+{% if legacy_accepted %}
+<details class="panel lean-legacy-record"><summary>Preserved accepted Slide 3 record from the legacy workflow</summary><p>{{ legacy_accepted.packet_id }} · {{ legacy_accepted.final_slide_status }} · {{ legacy_accepted.decided_at }}</p><p>This record is read-only in the lean workspace and its accepted academic content has not been altered.</p></details>
+{% endif %}
+
+{% if recent_units %}<details class="panel"><summary>Recent lean revision units</summary><ul>{% for unit in recent_units %}<li><a href="?unit={{ unit.unit_id }}">{{ unit.unit_id }}</a> · {{ unit.unit_type }} · {{ unit.status }}</li>{% endfor %}</ul></details>{% endif %}
+
+<script>
+document.querySelectorAll('.lean-copy').forEach(button => button.addEventListener('click', async () => {
+  const source = document.getElementById(button.dataset.copyTarget);
+  const status = button.parentElement.querySelector('.copy-confirmation');
+  try {
+    await navigator.clipboard.writeText(source.value);
+    status.textContent = 'Copied';
+  } catch (_error) {
+    source.focus(); source.select(); status.textContent = 'Selected — copy manually';
+  }
+}));
+</script>
+{% endblock %}

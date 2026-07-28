@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100" role="img" aria-labelledby="title description">
+  <title id="title">Decorative South Asia geographical motif</title>
+  <desc id="description">Decorative geographical motif; not for boundary interpretation.</desc>
+  <metadata>Original project artwork. Decorative geographical motif; not for boundary interpretation. Lines are stylistic and do not assert political or legal boundaries.</metadata>
+  <g fill="none" stroke="#356f69" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-width="11" d="M160 160 C260 105 395 102 515 145 C596 174 666 225 708 292 C670 322 650 364 657 407 C665 462 625 505 588 544 C548 586 526 640 507 697 C486 761 449 824 402 888 C374 925 342 958 308 978 C294 918 267 866 234 817 C202 770 175 714 169 650 C163 584 184 532 155 478 C126 425 101 366 113 305 C124 248 144 203 160 160 Z"/>
+    <path stroke-width="8" d="M164 199 C258 151 383 146 496 179 C565 199 622 231 670 276"/>
+    <path stroke-width="5" d="M186 238 C281 197 385 190 483 217 C545 234 596 263 636 299"/>
+    <path stroke-width="7" d="M322 236 C350 304 344 378 331 448 C317 520 333 588 367 653 C388 694 393 745 375 799"/>
+    <path stroke-width="6" d="M402 230 C418 300 449 361 493 414 C528 455 548 505 534 566 C521 619 488 663 461 704"/>
+    <path stroke-width="6" d="M544 288 C526 347 541 401 577 449 C604 486 608 524 585 568"/>
+    <path stroke-width="4" stroke-dasharray="12 18" d="M180 559 C274 519 371 509 466 535 C528 552 576 580 617 620"/>
+    <path stroke-width="4" stroke-dasharray="8 20" d="M198 658 C280 620 370 614 452 638 C505 654 548 684 576 723"/>
+    <path stroke-width="8" d="M545 924 C570 944 582 972 577 1001 C552 986 530 963 520 934 Z"/>
+    <path stroke-width="5" d="M684 548 C718 572 733 609 727 647 C695 629 675 595 676 560 Z"/>
+  </g>
+</svg>

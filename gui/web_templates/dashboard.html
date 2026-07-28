@@ -1,0 +1,32 @@
+{% extends "base.html" %}{% block title %}Semester Dashboard · IS529N{% endblock %}
+{% block content %}
+<header class="dashboard-hero">
+  <div>
+    <p class="eyebrow">IS529N · Semester 2026</p>
+    <h1>Course production,<br><em>clearly in view.</em></h1>
+    <p>Plan, review, and govern every paired lecture from one focused workspace.</p>
+  </div>
+  <div class="hero-summary" aria-label="Semester summary">
+    <span><strong>15</strong><small>teaching weeks</small></span>
+    <span><strong>30</strong><small>class sessions</small></span>
+    <span><strong>01</strong><small>active workflow</small></span>
+  </div>
+</header>
+<div class="section-heading">
+  <div><p class="eyebrow">Semester map</p><h2>Weekly lecture pairs</h2></div>
+  <p>Tuesday and Friday sessions stay connected from source review to classroom record.</p>
+</div>
+<section class="cards">
+{% for lecture in lectures %}
+  <article class="lecture-card {{ 'focus' if lecture.lecture_number == 1 }}">
+    <div class="card-top"><span>WEEK {{ '%02d'|format(lecture.lecture_number) }}</span><b>{{ lecture.title_status }}</b></div>
+    <h2>{{ lecture.weekly_title }}</h2>
+    {% if lecture.needs_title_confirmation %}<span class="title-badge">Needs title confirmation</span>{% endif %}
+    <div class="parts"><div><small>TUE · PART A · 09:00–11:00</small><strong>{{ 'Title pending' if lecture.part_a_title == 'Pending instructor confirmation' else lecture.part_a_title }}</strong><em>{{ lecture.part_a_title_status }}</em></div><div><small>FRI · PART B · 09:00–11:00</small><strong>{{ 'Title pending' if lecture.part_b_title == 'Pending instructor confirmation' else lecture.part_b_title }}</strong><em>{{ lecture.part_b_title_status }}</em></div></div>
+    <div class="title-meta"><span>{{ lecture.title_evidence_count }} historical title records</span><span>{{ 'Instructor confirmed' if lecture.title_confirmed else 'Instructor confirmation pending' }}</span></div>
+    <div class="metrics"><span>{{ lecture.historical_decks }} decks</span><span>{{ lecture.mapped_resources }} mapped</span><span>{{ lecture.revised_notes }} notes</span><span>Plan {{ lecture.slide_plan_status }}</span><span>Output {{ lecture.deliverable_status }}</span><span>Facts {{ lecture.verification_status }}</span><span>{{ lecture.approval_summary }}</span><span>{{ lecture.class_conduct_status }}</span><span>Ledger {{ lecture.ledger_event_status }}</span></div>
+    <a class="button card-action" href="/lectures/{{ lecture.lecture_number }}">Open lecture pair <span aria-hidden="true">→</span></a>
+  </article>
+{% endfor %}
+</section>
+{% endblock %}
