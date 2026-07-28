@@ -68,4 +68,3 @@ Then record:
 No inherited slide has been approved, rejected or removed by this record.
 No classroom PDF or F4 state is authorised. The next action belongs to the
 teacher inside the incubation review.
-
